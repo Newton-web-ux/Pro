@@ -7,137 +7,169 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231f4fd8'/%3E%3Cpath d='M11 23V9h6.5a4.5 4.5 0 0 1 0 9H11' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
   :root {
-    --bg: #eef1f7; --panel: #ffffff; --ink: #0f1b36; --muted: #5f6d89; --line: #d8deeb;
-    --accent: #1f4fd8; --accent2: #13b5c8; --accent-ink: #ffffff; --hover: #e7ecf8;
-    --shadow: 0 1px 2px rgba(15,27,54,.06), 0 8px 24px rgba(15,27,54,.08);
-    --rail: 76px;
+    --bg:#eef1f7; --panel:#fff; --ink:#0f1b36; --muted:#5f6d89; --line:#d8deeb;
+    --accent:#1f4fd8; --accent2:#13b5c8; --accent-ink:#fff; --hover:#e7ecf8;
+    --shadow:0 1px 2px rgba(15,27,54,.06),0 8px 24px rgba(15,27,54,.08); --rail:76px;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #0a1020; --panel: #121a2f; --ink: #e8edf8; --muted: #93a0bd; --line: #25304c;
-      --accent: #5b82ff; --accent2: #2fd0e0; --accent-ink: #0a1020; --hover: #1b2540;
-      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+      --bg:#0a1020; --panel:#121a2f; --ink:#e8edf8; --muted:#93a0bd; --line:#25304c;
+      --accent:#5b82ff; --accent2:#2fd0e0; --accent-ink:#0a1020; --hover:#1b2540;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
     }
   }
   :root[data-theme="dark"] {
-    --bg: #0a1020; --panel: #121a2f; --ink: #e8edf8; --muted: #93a0bd; --line: #25304c;
-    --accent: #5b82ff; --accent2: #2fd0e0; --accent-ink: #0a1020; --hover: #1b2540;
-    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    --bg:#0a1020; --panel:#121a2f; --ink:#e8edf8; --muted:#93a0bd; --line:#25304c;
+    --accent:#5b82ff; --accent2:#2fd0e0; --accent-ink:#0a1020; --hover:#1b2540;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
   }
-  * { box-sizing: border-box; }
-  html, body { height: 100%; margin: 0; }
+  * { box-sizing:border-box; }
+  html, body { height:100%; margin:0; }
   body {
-    background: var(--bg); color: var(--ink); overflow: hidden;
-    font-family: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
-    display: grid; grid-template-columns: var(--rail) 1fr; grid-template-rows: 100%;
+    background:var(--bg); color:var(--ink); overflow:hidden;
+    font-family:"Inter","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+    display:grid; grid-template-columns:var(--rail) 1fr; grid-template-rows:100%;
   }
-  button { font: inherit; color: inherit; cursor: pointer; }
-  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button { font:inherit; color:inherit; cursor:pointer; }
+  button:focus-visible, input:focus-visible, textarea:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  svg.i { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex:none; }
 
-  /* ---------- Sidebar ---------- */
-  aside {
-    background: var(--panel); border-right: 1px solid var(--line);
-    display: flex; flex-direction: column; align-items: center; padding: 14px 0; gap: 6px;
-  }
-  .logo { width: 44px; height: 44px; margin-bottom: 12px; }
-  .nav { display: flex; flex-direction: column; gap: 6px; width: 100%; padding: 0 8px; }
-  .nav button {
-    position: relative; border: 0; background: transparent; border-radius: 12px;
-    padding: 9px 0 7px; display: flex; flex-direction: column; align-items: center; gap: 4px;
-    color: var(--muted); font-size: 0.68rem; font-weight: 600; transition: background .15s, color .15s;
-  }
-  .nav button svg { width: 22px; height: 22px; }
-  .nav button:hover { background: var(--hover); color: var(--ink); }
-  .nav button[aria-selected="true"] { background: var(--hover); color: var(--accent); }
-  .nav button[aria-selected="true"]::before {
-    content: ""; position: absolute; left: -8px; top: 10px; bottom: 10px; width: 4px;
-    border-radius: 0 4px 4px 0; background: linear-gradient(var(--accent), var(--accent2));
-  }
-  .spacer { flex: 1; }
-  .side-tools { display: flex; flex-direction: column; gap: 6px; }
-  .icon-btn {
-    width: 40px; height: 40px; border: 1px solid var(--line); background: transparent;
-    border-radius: 10px; display: grid; place-items: center; color: var(--muted);
-  }
-  .icon-btn:hover { background: var(--hover); color: var(--ink); }
-  .icon-btn svg { width: 19px; height: 19px; }
+  /* Sidebar */
+  aside { background:var(--panel); border-right:1px solid var(--line); display:flex; flex-direction:column; align-items:center; padding:14px 0; gap:6px; overflow-y:auto; scrollbar-width:none; }
+  .logo { width:44px; height:44px; margin-bottom:10px; flex:none; cursor:pointer; }
+  .nav { display:flex; flex-direction:column; gap:4px; width:100%; padding:0 8px; }
+  .nav button { position:relative; border:0; background:transparent; border-radius:12px; padding:8px 0 6px; display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--muted); font-size:.68rem; font-weight:600; transition:background .15s,color .15s; }
+  .nav button svg.i { width:22px; height:22px; }
+  .nav button:hover { background:var(--hover); color:var(--ink); }
+  .nav button[aria-selected="true"] { background:var(--hover); color:var(--accent); }
+  .nav button[aria-selected="true"]::before { content:""; position:absolute; left:-8px; top:10px; bottom:10px; width:4px; border-radius:0 4px 4px 0; background:linear-gradient(var(--accent),var(--accent2)); }
+  .nav button.split-on { color:var(--accent2); }
+  .nav button.split-on::after { content:""; position:absolute; top:6px; right:14px; width:7px; height:7px; border-radius:50%; background:var(--accent2); }
+  .spacer { flex:1; min-height:8px; }
+  .side-tools { display:flex; flex-direction:column; gap:6px; }
+  .icon-btn { width:40px; height:40px; border:1px solid var(--line); background:transparent; border-radius:10px; display:grid; place-items:center; color:var(--muted); position:relative; }
+  .icon-btn:hover { background:var(--hover); color:var(--ink); }
+  .icon-btn.on { background:var(--hover); color:var(--accent); border-color:var(--accent); }
 
-  /* ---------- Workspace ---------- */
-  .work { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
-  .topbar {
-    height: 52px; display: flex; align-items: center; gap: 12px; padding: 0 16px;
-    background: var(--panel); border-bottom: 1px solid var(--line);
-  }
-  .title { font-weight: 700; letter-spacing: -0.01em; }
-  .sub { color: var(--muted); font-size: 0.85rem; }
-  .status { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--muted); }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: #e0a100; }
-  .dot.ok { background: #1fa971; }
-  .dot.off { background: #d64545; }
+  /* Workspace */
+  .work { display:flex; flex-direction:column; min-width:0; min-height:0; }
+  .topbar { height:52px; display:flex; align-items:center; gap:12px; padding:0 14px 0 16px; background:var(--panel); border-bottom:1px solid var(--line); }
+  .title { font-weight:700; letter-spacing:-.01em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .sub { color:var(--muted); font-size:.85rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .status { margin-left:auto; display:flex; align-items:center; gap:8px; font-size:.82rem; color:var(--muted); white-space:nowrap; }
+  .dot { width:8px; height:8px; border-radius:50%; background:#e0a100; }
+  .dot.ok { background:#1fa971; } .dot.off { background:#d64545; }
+  .search-btn { display:flex; align-items:center; gap:8px; border:1px solid var(--line); background:transparent; color:var(--muted); border-radius:9px; padding:6px 10px; font-size:.85rem; }
+  .search-btn:hover { background:var(--hover); color:var(--ink); }
+  kbd { font:inherit; font-size:.72rem; border:1px solid var(--line); border-bottom-width:2px; border-radius:5px; padding:1px 6px; background:var(--bg); color:var(--muted); }
 
-  main { flex: 1; position: relative; min-height: 0; margin: 10px; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: var(--shadow); border: 1px solid var(--line); }
-  .panel { position: absolute; inset: 0; display: none; }
-  .panel.active { display: block; }
-  iframe { width: 100%; height: 100%; border: 0; display: block; background: #fff; }
+  main { flex:1; position:relative; min-height:0; margin:10px; border-radius:14px; overflow:hidden; background:var(--panel); box-shadow:var(--shadow); border:1px solid var(--line); display:flex; }
+  .panel { position:relative; flex:1; min-width:0; display:none; background:#fff; }
+  .panel.active, .panel.split { display:block; }
+  main.is-split .panel.split { border-left:2px solid var(--accent); }
+  iframe { width:100%; height:100%; border:0; display:block; background:#fff; }
+  .close-split { position:absolute; top:8px; right:8px; z-index:5; border:1px solid var(--line); background:var(--panel); color:var(--muted); border-radius:8px; padding:4px 9px; font-size:.78rem; display:none; box-shadow:var(--shadow); }
+  .panel.split .close-split { display:block; }
 
-  /* per-app loading overlay */
-  .overlay {
-    position: absolute; inset: 0; background: var(--panel); display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 16px; text-align: center; padding: 24px;
-    transition: opacity .35s;
-  }
-  .overlay.hide { opacity: 0; pointer-events: none; }
-  .overlay svg.mark { width: 56px; height: 56px; }
-  .overlay h2 { margin: 0; font-size: 1.1rem; }
-  .overlay p { margin: 0; color: var(--muted); font-size: 0.9rem; max-width: 36ch; }
-  .bar { width: min(260px, 70%); height: 5px; border-radius: 5px; background: var(--line); overflow: hidden; }
-  .bar i { display: block; height: 100%; width: 0; border-radius: 5px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width .3s ease-out; }
-  .retry { display: none; border: 1px solid var(--line); background: transparent; padding: 8px 16px; border-radius: 9px; font-weight: 600; }
-  .retry:hover { background: var(--hover); }
-  .overlay.slow .retry { display: inline-block; }
+  .overlay { position:absolute; inset:0; background:var(--panel); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; text-align:center; padding:24px; transition:opacity .35s; z-index:4; }
+  .overlay.hide { opacity:0; pointer-events:none; }
+  .overlay svg.mark { width:56px; height:56px; }
+  .overlay h2 { margin:0; font-size:1.1rem; }
+  .overlay p { margin:0; color:var(--muted); font-size:.9rem; max-width:36ch; }
+  .bar { width:min(260px,70%); height:5px; border-radius:5px; background:var(--line); overflow:hidden; }
+  .bar i { display:block; height:100%; width:0; border-radius:5px; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width .3s ease-out; }
+  .retry { display:none; border:1px solid var(--line); background:transparent; padding:8px 16px; border-radius:9px; font-weight:600; }
+  .retry:hover { background:var(--hover); }
+  .overlay.slow .retry { display:inline-block; }
 
-  /* ---------- Splash screen ---------- */
-  #splash {
-    position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center;
-    justify-content: center; gap: 22px; background: #0a1020; color: #e8edf8;
-    transition: opacity .6s ease, visibility .6s;
-  }
-  #splash.gone { opacity: 0; visibility: hidden; }
-  #splash .big { width: 96px; height: 96px; animation: pop .9s cubic-bezier(.2,.9,.3,1.2) both; }
-  #splash .name { font-size: 1.9rem; font-weight: 800; letter-spacing: -0.02em; animation: rise .8s .25s both; }
-  #splash .tag { margin-top: -14px; color: #93a0bd; font-size: 0.95rem; animation: rise .8s .4s both; }
-  #splash .bar { background: #25304c; width: 220px; animation: rise .8s .5s both; }
-  @keyframes pop { from { transform: scale(.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-  @keyframes rise { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+  /* Home dashboard */
+  .home { background:var(--panel); overflow:auto; padding:32px clamp(18px,4vw,48px); color:var(--ink); }
+  .home h1 { margin:0; font-size:clamp(1.5rem,3vw,2.1rem); letter-spacing:-.02em; }
+  .home .clock { color:var(--muted); margin:6px 0 26px; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; }
+  .card { text-align:left; border:1px solid var(--line); background:var(--bg); border-radius:14px; padding:18px; display:flex; flex-direction:column; gap:10px; transition:transform .15s,border-color .15s; }
+  .card:hover { transform:translateY(-2px); border-color:var(--accent); }
+  .card .ic { width:44px; height:44px; border-radius:12px; display:grid; place-items:center; color:#fff; background:linear-gradient(135deg,var(--accent),var(--accent2)); }
+  .card .ic svg.i { width:22px; height:22px; }
+  .card b { font-size:1.02rem; }
+  .card span { color:var(--muted); font-size:.88rem; }
+  .card small { color:var(--muted); font-size:.76rem; margin-top:auto; }
+  .tips { margin-top:26px; color:var(--muted); font-size:.88rem; line-height:1.7; }
 
-  /* ---------- Mobile: bottom navigation ---------- */
-  @media (max-width: 720px) {
-    body { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
-    aside {
-      grid-row: 2; flex-direction: row; border-right: 0; border-top: 1px solid var(--line);
-      padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px)); justify-content: space-around;
-    }
-    .logo, .spacer, .side-tools { display: none; }
-    .nav { flex-direction: row; padding: 0; }
-    .nav button { flex: 1; }
-    .nav button[aria-selected="true"]::before { left: 20%; right: 20%; top: -6px; bottom: auto; width: auto; height: 3px; border-radius: 0 0 4px 4px; }
-    .work { grid-row: 1; padding-top: env(safe-area-inset-top, 0px); }
-    .sub, .status span { display: none; }
-    main { margin: 6px; }
+  /* Notes drawer */
+  #notes { position:fixed; top:0; right:0; bottom:0; width:min(360px,100%); z-index:60; background:var(--panel); border-left:1px solid var(--line); box-shadow:var(--shadow); transform:translateX(100%); transition:transform .25s; display:flex; flex-direction:column; }
+  #notes.open { transform:none; }
+  #notes header { display:flex; align-items:center; gap:8px; padding:12px 14px; border-bottom:1px solid var(--line); }
+  #notes header b { flex:1; }
+  #notes textarea { flex:1; border:0; resize:none; padding:14px; background:transparent; color:var(--ink); font:inherit; line-height:1.55; }
+  #notes footer { display:flex; gap:8px; align-items:center; padding:10px 14px; border-top:1px solid var(--line); color:var(--muted); font-size:.8rem; }
+  .btn { border:1px solid var(--line); background:transparent; border-radius:8px; padding:6px 11px; font-size:.84rem; font-weight:600; }
+  .btn:hover { background:var(--hover); }
+
+  /* Modals */
+  .modal-bg { position:fixed; inset:0; z-index:80; background:rgba(5,10,25,.55); display:none; justify-content:center; align-items:flex-start; padding:12vh 16px 16px; backdrop-filter:blur(2px); }
+  .modal-bg.open { display:flex; }
+  .modal { width:min(560px,100%); max-height:76vh; overflow:auto; background:var(--panel); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); }
+  .modal h3 { margin:0; padding:16px 18px 8px; }
+  .modal .body { padding:6px 18px 18px; }
+  #pal-input { width:100%; border:0; border-bottom:1px solid var(--line); padding:16px 18px; background:transparent; color:var(--ink); font:inherit; font-size:1.05rem; }
+  #pal-list { list-style:none; margin:0; padding:6px; max-height:50vh; overflow:auto; }
+  #pal-list li { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; cursor:pointer; }
+  #pal-list li.sel { background:var(--hover); color:var(--accent); }
+  #pal-list li small { margin-left:auto; color:var(--muted); }
+  .row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); }
+  .row:last-child { border-bottom:0; }
+  .swatches { display:flex; gap:8px; }
+  .sw { width:26px; height:26px; border-radius:50%; border:2px solid transparent; }
+  .sw.on { border-color:var(--ink); }
+  select { font:inherit; background:var(--bg); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:6px 8px; }
+  .keys { display:grid; grid-template-columns:auto 1fr; gap:6px 14px; font-size:.88rem; margin-top:6px; }
+
+  .toasts { position:fixed; left:50%; bottom:20px; transform:translateX(-50%); z-index:120; display:flex; flex-direction:column; gap:8px; align-items:center; pointer-events:none; }
+  .toast { background:var(--ink); color:var(--bg); padding:9px 16px; border-radius:10px; font-size:.88rem; box-shadow:var(--shadow); animation:tin .2s both; }
+  @keyframes tin { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+
+  /* Focus mode */
+  body.focus { grid-template-columns:1fr; }
+  body.focus aside, body.focus .topbar { display:none; }
+  body.focus main { margin:0; border-radius:0; border:0; }
+  .focus-exit { position:fixed; top:10px; left:50%; transform:translateX(-50%); z-index:70; display:none; border:1px solid var(--line); background:var(--panel); border-radius:999px; padding:5px 14px; font-size:.8rem; box-shadow:var(--shadow); opacity:.85; }
+  body.focus .focus-exit { display:block; }
+
+  /* Splash */
+  #splash { position:fixed; inset:0; z-index:200; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px; background:#0a1020; color:#e8edf8; transition:opacity .6s,visibility .6s; padding:20px; text-align:center; }
+  #splash.gone { opacity:0; visibility:hidden; }
+  #splash .big { width:96px; height:96px; animation:pop .9s cubic-bezier(.2,.9,.3,1.2) both; }
+  #splash .name { font-size:1.9rem; font-weight:800; letter-spacing:-.02em; animation:rise .8s .25s both; }
+  #splash .tag { margin-top:-14px; color:#93a0bd; font-size:.95rem; animation:rise .8s .4s both; }
+  #splash .bar { background:#25304c; width:220px; animation:rise .8s .5s both; }
+  @keyframes pop { from { transform:scale(.5); opacity:0; } to { transform:scale(1); opacity:1; } }
+  @keyframes rise { from { transform:translateY(10px); opacity:0; } to { transform:none; opacity:1; } }
+
+  @media (max-width:720px) {
+    body { grid-template-columns:1fr; grid-template-rows:1fr auto; }
+    aside { grid-row:2; flex-direction:row; border-right:0; border-top:1px solid var(--line); padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px)); justify-content:space-around; overflow:visible; }
+    .logo,.spacer,.side-tools { display:none; }
+    .nav { flex-direction:row; padding:0; }
+    .nav button { flex:1; font-size:.62rem; }
+    .nav button[aria-selected="true"]::before { left:20%; right:20%; top:-6px; bottom:auto; width:auto; height:3px; border-radius:0 0 4px 4px; }
+    .work { grid-row:1; padding-top:env(safe-area-inset-top,0px); }
+    .sub,.status span,.search-btn span,.search-btn kbd { display:none; }
+    main { margin:6px; }
+    main.is-split { flex-direction:column; }
+    main.is-split .panel.split { border-left:0; border-top:2px solid var(--accent); }
   }
-  @media (prefers-reduced-motion: reduce) {
-    #splash .big, #splash .name, #splash .tag, #splash .bar { animation: none; }
+  @media (prefers-reduced-motion:reduce) {
+    #splash .big,#splash .name,#splash .tag,#splash .bar,.toast { animation:none; }
+    .card,#notes { transition:none; }
   }
 </style>
 </head>
 <body>
 
-<!-- Shared logo symbol -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1f4fd8"/><stop offset="1" stop-color="#13b5c8"/>
-    </linearGradient>
+    <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f4fd8"/><stop offset="1" stop-color="#13b5c8"/></linearGradient>
     <symbol id="logo" viewBox="0 0 48 48">
       <rect width="48" height="48" rx="12" fill="url(#lg)"/>
       <path d="M16 34V14h9.5a6.5 6.5 0 0 1 0 13H16" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -154,96 +186,133 @@
 </div>
 
 <aside>
-  <svg class="logo" aria-label="Pro"><use href="#logo"/></svg>
+  <svg class="logo" id="logo-home" aria-label="Pro home"><use href="#logo"/></svg>
   <nav class="nav" id="nav" role="tablist" aria-label="Pro apps"></nav>
   <div class="spacer"></div>
-  <div class="side-tools">
-    <button class="icon-btn" id="reload" type="button" title="Reload app" aria-label="Reload app">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
-    </button>
-    <button class="icon-btn" id="fullscreen" type="button" title="Full screen (F)" aria-label="Full screen">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg>
-    </button>
-    <button class="icon-btn" id="theme" type="button" title="Light / dark" aria-label="Switch theme">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-    </button>
-  </div>
+  <div class="side-tools" id="tools"></div>
 </aside>
 
 <div class="work">
   <div class="topbar">
     <span class="title" id="cur-title"></span>
     <span class="sub" id="cur-sub"></span>
-    <div class="status"><i class="dot" id="dot"></i><span id="status-text">Connecting</span></div>
+    <div class="status"><i class="dot" id="dot"></i><span id="status-text">Ready</span></div>
+    <button class="search-btn" id="open-pal" type="button" aria-label="Search and commands"><span id="search-ic"></span><span>Search</span><kbd>Ctrl K</kbd></button>
   </div>
   <main id="stage"></main>
 </div>
 
+<aside id="notes" aria-label="Quick notes">
+  <header><b>Quick notes</b><button class="btn" id="n-close" type="button">Close</button></header>
+  <textarea id="n-text" placeholder="Jot something down. Notes are saved in this browser."></textarea>
+  <footer><span id="n-state">Saved</span><span style="flex:1"></span><button class="btn" id="n-copy" type="button">Copy</button><button class="btn" id="n-dl" type="button">Download</button><button class="btn" id="n-clear" type="button">Clear</button></footer>
+</aside>
+
+<div class="modal-bg" id="pal-bg"><div class="modal" role="dialog" aria-label="Command palette"><input id="pal-input" placeholder="Type a command or app name" autocomplete="off"><ul id="pal-list"></ul></div></div>
+
+<div class="modal-bg" id="set-bg"><div class="modal" role="dialog" aria-label="Settings">
+  <h3>Settings and shortcuts</h3>
+  <div class="body">
+    <div class="row"><span>Accent color</span><div class="swatches" id="swatches"></div></div>
+    <div class="row"><span>When Pro Suite opens</span><select id="set-start"><option value="home">Show Home</option><option value="last">Reopen last app</option></select></div>
+    <div class="row"><span>Skip the splash screen</span><input type="checkbox" id="set-splash"></div>
+    <div class="keys">
+      <kbd>Ctrl/Cmd K</kbd><span>Search apps and commands</span>
+      <kbd>Alt 0</kbd><span>Home</span>
+      <kbd>Alt 1 to 4</kbd><span>Switch app</span>
+      <kbd>Alt S</kbd><span>Split view on or off (Shift+click an app to split with it)</span>
+      <kbd>Alt N</kbd><span>Quick notes</span>
+      <kbd>Alt Z</kbd><span>Focus mode</span>
+      <kbd>Alt F</kbd><span>Full screen</span>
+      <kbd>Esc</kbd><span>Close panels</span>
+    </div>
+    <p style="color:var(--muted);font-size:.8rem;margin:12px 0 0">Shortcuts work when the Pro Suite frame has focus, not while you are typing inside an app.</p>
+  </div>
+</div></div>
+
+<button class="focus-exit" id="focus-exit" type="button">Exit focus mode (Esc)</button>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
 <script>
-  const ICONS = {
-    whiteboard: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
-    document: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
-    slides: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8M7 12l3-3 3 2 4-4"/>',
-    classroom: '<path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5"/>'
+  /* ---------- Helpers ---------- */
+  const P = {
+    home:'<path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/>',
+    whiteboard:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+    document:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
+    slides:'<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8M7 12l3-3 3 2 4-4"/>',
+    classroom:'<path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5"/>',
+    search:'<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
+    split:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/>',
+    notes:'<path d="M5 3h11l3 3v15H5z"/><path d="M8 9h8M8 13h8M8 17h5"/>',
+    focus:'<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
+    reload:'<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>',
+    full:'<path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/>',
+    theme:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
+    settings:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'
   };
-
-  const APPS = [
-    { id: "whiteboard", name: "Whiteboard", title: "Pro Whiteboard", desc: "Sketch, teach and brainstorm on a shared canvas", url: "https://prowhiteboard.in" },
-    { id: "document",   name: "Document",   title: "Pro Document",   desc: "Write and edit documents",                    url: "https://prodocument.in" },
-    { id: "slides",     name: "Slides",     title: "Pro Slides",     desc: "Create and present slide decks",              url: "https://newton-web-ux.github.io/Pro-MEET/" },
-    { id: "classroom",  name: "Classroom",  title: "Pro Classroom",  desc: "Classes, assignments and learning",           url: "https://newton-web-ux.github.io/Proclassroom-/" }
-  ];
-
-  const nav = document.getElementById("nav");
-  const stage = document.getElementById("stage");
-  const dot = document.getElementById("dot");
-  const statusText = document.getElementById("status-text");
-  const S = {};          // per-app state
-  let current = null;
-
-  function setStatus(kind, text) {
-    dot.className = "dot " + (kind || "");
-    statusText.textContent = text;
+  const icon = n => '<svg class="i" viewBox="0 0 24 24">' + P[n] + '</svg>';
+  const $ = id => document.getElementById(id);
+  const ls = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  function toast(t) {
+    const el = document.createElement("div"); el.className = "toast"; el.textContent = t;
+    $("toasts").appendChild(el); setTimeout(() => el.remove(), 2600);
   }
 
-  function build(app, index) {
-    // sidebar button
+  /* ---------- Apps ---------- */
+  const APPS = [
+    { id:"whiteboard", name:"Whiteboard", title:"Pro Whiteboard", desc:"Sketch, teach and brainstorm on a shared canvas", url:"https://prowhiteboard.in" },
+    { id:"document",   name:"Document",   title:"Pro Document",   desc:"Write and edit documents",                    url:"https://prodocument.in" },
+    { id:"slides",     name:"Slides",     title:"Pro Slides",     desc:"Create and present slide decks",              url:"https://newton-web-ux.github.io/Pro-MEET/" },
+    { id:"classroom",  name:"Classroom",  title:"Pro Classroom",  desc:"Classes, assignments and learning",           url:"https://newton-web-ux.github.io/Proclassroom-/" }
+  ];
+  const stage = $("stage"), nav = $("nav"), dot = $("dot"), statusText = $("status-text");
+  const S = {};
+  let current = "home", split = null;
+  const settings = Object.assign({ accent:0, start:"home", skipSplash:false }, ls.get("pro-settings", {}));
+  const root = document.documentElement;
+
+  function setStatus(kind, text) { dot.className = "dot " + (kind || ""); statusText.textContent = text; }
+  const isDark = () => root.dataset.theme === "dark" || (!root.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
+
+  /* ---------- Accent colors ---------- */
+  const ACCENTS = [["#1f4fd8","#5b82ff"],["#6d3fd8","#a38bff"],["#0b8f9c","#2fd0e0"],["#1a8f5a","#3fd391"],["#d1366b","#ff7aa6"]];
+  function applyAccent() {
+    const c = ACCENTS[settings.accent] || ACCENTS[0];
+    root.style.setProperty("--accent", isDark() ? c[1] : c[0]);
+    document.querySelectorAll(".sw").forEach((s, i) => s.classList.toggle("on", i === settings.accent));
+  }
+  function applyTheme(t) { if (t) root.dataset.theme = t; applyAccent(); }
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyAccent);
+
+  /* ---------- Build apps ---------- */
+  function build(app, i) {
     const b = document.createElement("button");
     b.type = "button"; b.id = "tab-" + app.id; b.setAttribute("role", "tab");
-    b.title = app.title + " (Alt+" + (index + 1) + ")";
-    b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + ICONS[app.id] + '</svg><span>' + app.name + '</span>';
-    b.addEventListener("click", () => select(app.id));
+    b.title = app.title + " (Alt+" + (i + 1) + ", Shift+click to split)";
+    b.innerHTML = icon(app.id) + "<span>" + app.name + "</span>";
+    b.addEventListener("click", e => e.shiftKey ? openSplit(app.id) : select(app.id));
     nav.appendChild(b);
 
-    // panel
-    const panel = document.createElement("div");
-    panel.className = "panel";
+    const panel = document.createElement("div"); panel.className = "panel";
     const iframe = document.createElement("iframe");
     iframe.title = app.title;
     iframe.allow = "camera; microphone; display-capture; fullscreen; clipboard-read; clipboard-write; autoplay";
     iframe.allowFullscreen = true;
-
-    const overlay = document.createElement("div");
-    overlay.className = "overlay";
-    overlay.innerHTML =
-      '<svg class="mark"><use href="#logo"/></svg>' +
-      '<h2>Opening ' + app.title + '</h2>' +
-      '<p class="msg">' + app.desc + '</p>' +
-      '<div class="bar"><i></i></div>' +
-      '<button class="retry" type="button">Try again</button>';
-    const bar = overlay.querySelector(".bar i");
-    const msg = overlay.querySelector(".msg");
+    const overlay = document.createElement("div"); overlay.className = "overlay";
+    overlay.innerHTML = '<svg class="mark"><use href="#logo"/></svg><h2>Opening ' + app.title + '</h2><p class="msg">' + app.desc + '</p><div class="bar"><i></i></div><button class="retry" type="button">Try again</button>';
+    const closeBtn = document.createElement("button"); closeBtn.className = "close-split"; closeBtn.type = "button"; closeBtn.textContent = "Close split";
+    closeBtn.addEventListener("click", closeSplit);
     overlay.querySelector(".retry").addEventListener("click", () => load(app.id));
-
-    panel.append(iframe, overlay);
+    panel.append(iframe, overlay, closeBtn);
     stage.appendChild(panel);
-    S[app.id] = { app, b, panel, iframe, overlay, bar, msg, loaded: false, started: false, tick: null, timeout: null };
+    S[app.id] = { app, b, panel, iframe, overlay, bar:overlay.querySelector(".bar i"), msg:overlay.querySelector(".msg"), loaded:false, started:false };
 
     iframe.addEventListener("load", () => {
-      const s = S[app.id];
-      if (!s.started) return;
-      s.loaded = true;
-      clearInterval(s.tick); clearTimeout(s.timeout);
+      const s = S[app.id]; if (!s.started) return;
+      s.loaded = true; clearInterval(s.tick); clearTimeout(s.timeout);
       s.bar.style.width = "100%";
       setTimeout(() => s.overlay.classList.add("hide"), 250);
       if (current === app.id) setStatus("ok", "Connected");
@@ -253,12 +322,10 @@
   function load(id) {
     const s = S[id];
     s.loaded = false; s.started = true;
-    s.overlay.classList.remove("hide", "slow");
-    s.msg.textContent = s.app.desc;
+    s.overlay.classList.remove("hide", "slow"); s.msg.textContent = s.app.desc;
     let p = 8; s.bar.style.width = p + "%";
     clearInterval(s.tick); clearTimeout(s.timeout);
-    s.tick = setInterval(() => { p += (90 - p) * 0.08; s.bar.style.width = p.toFixed(1) + "%"; }, 300);
-    // After 12s, offer a retry (the app may be slow or may not allow embedding)
+    s.tick = setInterval(() => { p += (90 - p) * .08; s.bar.style.width = p.toFixed(1) + "%"; }, 300);
     s.timeout = setTimeout(() => {
       if (s.loaded) return;
       s.overlay.classList.add("slow");
@@ -269,59 +336,207 @@
     s.iframe.src = s.app.url;
   }
 
+  /* ---------- Home dashboard ---------- */
+  const home = document.createElement("div");
+  home.className = "panel home"; home.id = "home";
+  stage.appendChild(home);
+
+  function ago(ts) {
+    if (!ts) return "Not opened yet";
+    const m = Math.round((Date.now() - ts) / 60000);
+    if (m < 1) return "Opened just now";
+    if (m < 60) return "Opened " + m + " min ago";
+    if (m < 1440) return "Opened " + Math.round(m / 60) + " h ago";
+    return "Opened " + new Date(ts).toLocaleDateString();
+  }
+  function renderHome() {
+    const h = new Date().getHours();
+    const g = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
+    const rec = ls.get("pro-recent", {});
+    home.innerHTML = '<h1>' + g + '</h1><div class="clock" id="clock"></div><div class="cards">' +
+      APPS.map(a => '<button class="card" type="button" data-id="' + a.id + '"><div class="ic">' + icon(a.id) + '</div><b>' + a.title + '</b><span>' + a.desc + '</span><small>' + ago(rec[a.id]) + '</small></button>').join("") +
+      '</div><div class="tips">Press <kbd>Ctrl K</kbd> to search, hold Shift while clicking an app to open it side by side, or open Quick notes from the sidebar.</div>';
+    home.querySelectorAll(".card").forEach(c => c.addEventListener("click", e => e.shiftKey ? openSplit(c.dataset.id) : select(c.dataset.id)));
+    tickClock();
+  }
+  function tickClock() {
+    const c = $("clock"); if (!c) return;
+    c.textContent = new Date().toLocaleString([], { weekday:"long", day:"numeric", month:"long", hour:"numeric", minute:"2-digit" });
+  }
+  setInterval(tickClock, 30000);
+
+  /* ---------- Navigation ---------- */
+  function mark(id) { const r = ls.get("pro-recent", {}); r[id] = Date.now(); ls.set("pro-recent", r); }
+  function layout() {
+    home.classList.toggle("active", current === "home");
+    const splitOn = split && current !== "home";
+    APPS.forEach(a => {
+      const s = S[a.id];
+      s.panel.classList.toggle("active", current === a.id);
+      s.panel.classList.toggle("split", splitOn && split === a.id);
+      s.b.setAttribute("aria-selected", current === a.id);
+      s.b.classList.toggle("split-on", !!splitOn && split === a.id);
+    });
+    $("tab-home").setAttribute("aria-selected", current === "home");
+    stage.classList.toggle("is-split", !!splitOn);
+    $("split-btn").classList.toggle("on", !!splitOn);
+    let title, sub;
+    if (current === "home") { title = "Home"; sub = "Pick an app to get started"; }
+    else { title = S[current].app.title + (splitOn ? " + " + S[split].app.name : ""); sub = splitOn ? "Split view" : S[current].app.desc; }
+    $("cur-title").textContent = title; $("cur-sub").textContent = sub;
+    document.title = (current === "home" ? "Home" : title) + " | Pro Suite";
+    if (current === "home") setStatus("ok", "Ready");
+    else setStatus(S[current].loaded ? "ok" : "", S[current].loaded ? "Connected" : "Connecting");
+    history.replaceState(null, "", "#" + current);
+  }
+  function ensure(id) { if (!S[id].started) load(id); }
   function select(id) {
     current = id;
-    const s = S[id];
-    APPS.forEach(a => {
-      const on = a.id === id;
-      S[a.id].panel.classList.toggle("active", on);
-      S[a.id].b.setAttribute("aria-selected", on);
-    });
-    document.getElementById("cur-title").textContent = s.app.title;
-    document.getElementById("cur-sub").textContent = s.app.desc;
-    document.title = s.app.title + " | Pro Suite";
-    if (!s.started) load(id);
-    else setStatus(s.loaded ? "ok" : "", s.loaded ? "Connected" : "Connecting");
-    try { localStorage.setItem("pro-last", id); } catch (e) {}
-    history.replaceState(null, "", "#" + id);
+    if (id === "home") { renderHome(); }
+    else { if (split === id) split = null; mark(id); ensure(id); ls.set("pro-last", id); }
+    if (split && current !== "home") ensure(split);
+    layout();
+  }
+  function openSplit(id) {
+    if (current === "home" || current === id) current = (APPS.find(a => a.id !== id)).id;
+    split = id; mark(current); mark(id); ensure(current); ensure(id); layout();
+  }
+  function closeSplit() { split = null; layout(); }
+  function toggleSplit() {
+    if (split && current !== "home") return closeSplit();
+    if (current === "home") return toast("Open an app first, then split");
+    const i = APPS.findIndex(a => a.id === current);
+    openSplit(APPS[(i + 1) % APPS.length].id);
   }
 
+  /* ---------- Sidebar tools ---------- */
+  const homeBtn = document.createElement("button");
+  homeBtn.type = "button"; homeBtn.id = "tab-home"; homeBtn.setAttribute("role", "tab"); homeBtn.title = "Home (Alt+0)";
+  homeBtn.innerHTML = icon("home") + "<span>Home</span>";
+  homeBtn.addEventListener("click", () => select("home"));
+  nav.appendChild(homeBtn);
   APPS.forEach(build);
 
-  // ---- Controls ----
-  document.getElementById("reload").addEventListener("click", () => current && load(current));
-  const toggleFull = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
-  document.getElementById("fullscreen").addEventListener("click", toggleFull);
+  const TOOLS = [
+    ["split-btn","split","Split view (Alt+S)", toggleSplit],
+    ["notes-btn","notes","Quick notes (Alt+N)", () => toggleNotes()],
+    ["focus-btn","focus","Focus mode (Alt+Z)", () => setFocus(true)],
+    ["reload-btn","reload","Reload app", () => { if (current === "home") return; load(current); if (split) load(split); }],
+    ["full-btn","full","Full screen (Alt+F)", toggleFull],
+    ["theme-btn","theme","Light or dark", () => { const n = isDark() ? "light" : "dark"; applyTheme(n); ls.set("pro-theme", n); }],
+    ["set-btn","settings","Settings and shortcuts", () => openModal("set-bg")]
+  ];
+  TOOLS.forEach(([id, ic, label, fn]) => {
+    const b = document.createElement("button");
+    b.className = "icon-btn"; b.id = id; b.type = "button"; b.title = label; b.setAttribute("aria-label", label);
+    b.innerHTML = icon(ic); b.addEventListener("click", fn); $("tools").appendChild(b);
+  });
+  $("search-ic").innerHTML = icon("search");
+  $("logo-home").addEventListener("click", () => select("home"));
 
-  const root = document.documentElement;
-  document.getElementById("theme").addEventListener("click", () => {
-    const dark = root.dataset.theme === "dark" || (!root.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
-    root.dataset.theme = dark ? "light" : "dark";
-    try { localStorage.setItem("pro-theme", root.dataset.theme); } catch (e) {}
+  /* ---------- Fullscreen and focus ---------- */
+  function toggleFull() { document.fullscreenElement ? document.exitFullscreen() : root.requestFullscreen().catch(() => toast("Full screen is not available here")); }
+  function setFocus(on) { document.body.classList.toggle("focus", on); if (on) toast("Focus mode on. Press Esc to exit"); }
+  $("focus-exit").addEventListener("click", () => setFocus(false));
+
+  /* ---------- Notes ---------- */
+  const nt = $("n-text"); let ntTimer;
+  nt.value = ls.get("pro-notes", "");
+  function toggleNotes(force) {
+    const open = force === undefined ? !$("notes").classList.contains("open") : force;
+    $("notes").classList.toggle("open", open); $("notes-btn").classList.toggle("on", open);
+    if (open) nt.focus();
+  }
+  nt.addEventListener("input", () => {
+    $("n-state").textContent = "Saving…"; clearTimeout(ntTimer);
+    ntTimer = setTimeout(() => { ls.set("pro-notes", nt.value); $("n-state").textContent = "Saved"; }, 400);
+  });
+  $("n-close").addEventListener("click", () => toggleNotes(false));
+  $("n-copy").addEventListener("click", () => navigator.clipboard.writeText(nt.value).then(() => toast("Notes copied"), () => toast("Copy failed")));
+  $("n-dl").addEventListener("click", () => {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([nt.value], { type:"text/plain" })); a.download = "pro-notes.txt"; a.click(); URL.revokeObjectURL(a.href);
+  });
+  $("n-clear").addEventListener("click", () => { if (nt.value && confirm("Clear all notes?")) { nt.value = ""; ls.set("pro-notes", ""); toast("Notes cleared"); } });
+
+  /* ---------- Modals and command palette ---------- */
+  function openModal(id) { $(id).classList.add("open"); if (id === "pal-bg") { $("pal-input").value = ""; renderPal(); $("pal-input").focus(); } }
+  function closeModals() { document.querySelectorAll(".modal-bg").forEach(m => m.classList.remove("open")); }
+  document.querySelectorAll(".modal-bg").forEach(m => m.addEventListener("mousedown", e => { if (e.target === m) closeModals(); }));
+  $("open-pal").addEventListener("click", () => openModal("pal-bg"));
+
+  let sel = 0, items = [];
+  function commands() {
+    const c = [{ l:"Go to Home", k:"Alt 0", f:() => select("home"), ic:"home" }];
+    APPS.forEach((a, i) => c.push({ l:"Open " + a.title, k:"Alt " + (i + 1), f:() => select(a.id), ic:a.id }));
+    APPS.forEach(a => c.push({ l:"Split view with " + a.title, k:"", f:() => openSplit(a.id), ic:"split" }));
+    c.push({ l:"Close split view", k:"", f:closeSplit, ic:"split" },
+      { l:"Open quick notes", k:"Alt N", f:() => toggleNotes(true), ic:"notes" },
+      { l:"Focus mode", k:"Alt Z", f:() => setFocus(true), ic:"focus" },
+      { l:"Reload current app", k:"", f:() => $("reload-btn").click(), ic:"reload" },
+      { l:"Toggle full screen", k:"Alt F", f:toggleFull, ic:"full" },
+      { l:"Switch light or dark theme", k:"", f:() => $("theme-btn").click(), ic:"theme" },
+      { l:"Settings and shortcuts", k:"", f:() => openModal("set-bg"), ic:"settings" });
+    return c;
+  }
+  function renderPal() {
+    const q = $("pal-input").value.trim().toLowerCase();
+    items = commands().filter(c => c.l.toLowerCase().includes(q));
+    sel = Math.min(sel, Math.max(items.length - 1, 0));
+    $("pal-list").innerHTML = items.length ? items.map((c, i) => '<li data-i="' + i + '" class="' + (i === sel ? "sel" : "") + '">' + icon(c.ic) + '<span>' + c.l + '</span><small>' + c.k + '</small></li>').join("") : '<li>No matches</li>';
+    $("pal-list").querySelectorAll("li[data-i]").forEach(li => li.addEventListener("click", () => runPal(+li.dataset.i)));
+  }
+  function runPal(i) { const c = items[i]; if (!c) return; closeModals(); c.f(); }
+  $("pal-input").addEventListener("input", () => { sel = 0; renderPal(); });
+  $("pal-input").addEventListener("keydown", e => {
+    if (e.key === "ArrowDown") { sel = Math.min(sel + 1, items.length - 1); renderPal(); e.preventDefault(); }
+    else if (e.key === "ArrowUp") { sel = Math.max(sel - 1, 0); renderPal(); e.preventDefault(); }
+    else if (e.key === "Enter") runPal(sel);
   });
 
-  // Keyboard shortcuts: Alt+1..4 switch apps
+  /* ---------- Settings ---------- */
+  ACCENTS.forEach((c, i) => {
+    const s = document.createElement("button"); s.type = "button"; s.className = "sw"; s.style.background = c[0]; s.setAttribute("aria-label", "Accent " + (i + 1));
+    s.addEventListener("click", () => { settings.accent = i; ls.set("pro-settings", settings); applyAccent(); });
+    $("swatches").appendChild(s);
+  });
+  $("set-start").value = settings.start; $("set-splash").checked = settings.skipSplash;
+  $("set-start").addEventListener("change", e => { settings.start = e.target.value; ls.set("pro-settings", settings); });
+  $("set-splash").addEventListener("change", e => { settings.skipSplash = e.target.checked; ls.set("pro-settings", settings); });
+
+  /* ---------- Keyboard ---------- */
   document.addEventListener("keydown", e => {
-    if (e.altKey && e.key >= "1" && e.key <= String(APPS.length)) {
-      e.preventDefault(); select(APPS[+e.key - 1].id);
-    }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); openModal("pal-bg"); return; }
+    if (e.key === "Escape") { closeModals(); toggleNotes(false); setFocus(false); return; }
+    if (!e.altKey) return;
+    const k = e.key.toLowerCase();
+    if (k === "0") select("home");
+    else if (k >= "1" && k <= String(APPS.length)) select(APPS[+k - 1].id);
+    else if (k === "s") toggleSplit();
+    else if (k === "n") toggleNotes();
+    else if (k === "z") setFocus(!document.body.classList.contains("focus"));
+    else if (k === "f") toggleFull();
+    else return;
+    e.preventDefault();
   });
 
-  window.addEventListener("online", () => current && setStatus(S[current].loaded ? "ok" : "", S[current].loaded ? "Connected" : "Connecting"));
-  window.addEventListener("offline", () => setStatus("off", "Offline"));
+  window.addEventListener("online", () => { toast("Back online"); layout(); });
+  window.addEventListener("offline", () => { setStatus("off", "Offline"); toast("You are offline"); });
 
-  // ---- Restore preferences ----
-  try { const t = localStorage.getItem("pro-theme"); if (t) root.dataset.theme = t; } catch (e) {}
+  /* ---------- Start ---------- */
+  const savedTheme = ls.get("pro-theme", null); if (savedTheme) root.dataset.theme = savedTheme;
+  applyAccent();
   let start = location.hash.slice(1);
-  if (!S[start]) { try { start = localStorage.getItem("pro-last"); } catch (e) {} }
-  if (!S[start]) start = APPS[0].id;
+  if (start !== "home" && !S[start]) start = settings.start === "last" ? ls.get("pro-last", "home") : "home";
+  if (start !== "home" && !S[start]) start = "home";
 
-  // ---- Splash screen ----
-  const splashBar = document.getElementById("splash-bar");
-  const splash = document.getElementById("splash");
-  requestAnimationFrame(() => { splashBar.style.transition = "width 1.6s ease-in-out"; splashBar.style.width = "100%"; });
-  setTimeout(() => { splash.classList.add("gone"); select(start); }, 1900);
-  setTimeout(() => splash.remove(), 2700);
+  const splash = $("splash");
+  if (settings.skipSplash) { splash.remove(); select(start); }
+  else {
+    requestAnimationFrame(() => { $("splash-bar").style.transition = "width 1.6s ease-in-out"; $("splash-bar").style.width = "100%"; });
+    setTimeout(() => { splash.classList.add("gone"); select(start); }, 1900);
+    setTimeout(() => splash.remove(), 2700);
+  }
 </script>
 </body>
 </html>
