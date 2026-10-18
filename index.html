@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pro Suite</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231f4fd8'/%3E%3Cpath d='M11 23V9h6.5a4.5 4.5 0 0 1 0 9H11' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #eef1f7; --panel: #ffffff; --ink: #0f1b36; --muted: #5f6d89; --line: #d8deeb;
+    --accent: #1f4fd8; --accent2: #13b5c8; --accent-ink: #ffffff; --hover: #e7ecf8;
+    --shadow: 0 1px 2px rgba(15,27,54,.06), 0 8px 24px rgba(15,27,54,.08);
+    --rail: 76px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0a1020; --panel: #121a2f; --ink: #e8edf8; --muted: #93a0bd; --line: #25304c;
+      --accent: #5b82ff; --accent2: #2fd0e0; --accent-ink: #0a1020; --hover: #1b2540;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0a1020; --panel: #121a2f; --ink: #e8edf8; --muted: #93a0bd; --line: #25304c;
+    --accent: #5b82ff; --accent2: #2fd0e0; --accent-ink: #0a1020; --hover: #1b2540;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--bg); color: var(--ink); overflow: hidden;
+    font-family: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    display: grid; grid-template-columns: var(--rail) 1fr; grid-template-rows: 100%;
+  }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- Sidebar ---------- */
+  aside {
+    background: var(--panel); border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; align-items: center; padding: 14px 0; gap: 6px;
+  }
+  .logo { width: 44px; height: 44px; margin-bottom: 12px; }
+  .nav { display: flex; flex-direction: column; gap: 6px; width: 100%; padding: 0 8px; }
+  .nav button {
+    position: relative; border: 0; background: transparent; border-radius: 12px;
+    padding: 9px 0 7px; display: flex; flex-direction: column; align-items: center; gap: 4px;
+    color: var(--muted); font-size: 0.68rem; font-weight: 600; transition: background .15s, color .15s;
+  }
+  .nav button svg { width: 22px; height: 22px; }
+  .nav button:hover { background: var(--hover); color: var(--ink); }
+  .nav button[aria-selected="true"] { background: var(--hover); color: var(--accent); }
+  .nav button[aria-selected="true"]::before {
+    content: ""; position: absolute; left: -8px; top: 10px; bottom: 10px; width: 4px;
+    border-radius: 0 4px 4px 0; background: linear-gradient(var(--accent), var(--accent2));
+  }
+  .spacer { flex: 1; }
+  .side-tools { display: flex; flex-direction: column; gap: 6px; }
+  .icon-btn {
+    width: 40px; height: 40px; border: 1px solid var(--line); background: transparent;
+    border-radius: 10px; display: grid; place-items: center; color: var(--muted);
+  }
+  .icon-btn:hover { background: var(--hover); color: var(--ink); }
+  .icon-btn svg { width: 19px; height: 19px; }
+
+  /* ---------- Workspace ---------- */
+  .work { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+  .topbar {
+    height: 52px; display: flex; align-items: center; gap: 12px; padding: 0 16px;
+    background: var(--panel); border-bottom: 1px solid var(--line);
+  }
+  .title { font-weight: 700; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); font-size: 0.85rem; }
+  .status { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--muted); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #e0a100; }
+  .dot.ok { background: #1fa971; }
+  .dot.off { background: #d64545; }
+
+  main { flex: 1; position: relative; min-height: 0; margin: 10px; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: var(--shadow); border: 1px solid var(--line); }
+  .panel { position: absolute; inset: 0; display: none; }
+  .panel.active { display: block; }
+  iframe { width: 100%; height: 100%; border: 0; display: block; background: #fff; }
+
+  /* per-app loading overlay */
+  .overlay {
+    position: absolute; inset: 0; background: var(--panel); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 16px; text-align: center; padding: 24px;
+    transition: opacity .35s;
+  }
+  .overlay.hide { opacity: 0; pointer-events: none; }
+  .overlay svg.mark { width: 56px; height: 56px; }
+  .overlay h2 { margin: 0; font-size: 1.1rem; }
+  .overlay p { margin: 0; color: var(--muted); font-size: 0.9rem; max-width: 36ch; }
+  .bar { width: min(260px, 70%); height: 5px; border-radius: 5px; background: var(--line); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; border-radius: 5px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width .3s ease-out; }
+  .retry { display: none; border: 1px solid var(--line); background: transparent; padding: 8px 16px; border-radius: 9px; font-weight: 600; }
+  .retry:hover { background: var(--hover); }
+  .overlay.slow .retry { display: inline-block; }
+
+  /* ---------- Splash screen ---------- */
+  #splash {
+    position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 22px; background: #0a1020; color: #e8edf8;
+    transition: opacity .6s ease, visibility .6s;
+  }
+  #splash.gone { opacity: 0; visibility: hidden; }
+  #splash .big { width: 96px; height: 96px; animation: pop .9s cubic-bezier(.2,.9,.3,1.2) both; }
+  #splash .name { font-size: 1.9rem; font-weight: 800; letter-spacing: -0.02em; animation: rise .8s .25s both; }
+  #splash .tag { margin-top: -14px; color: #93a0bd; font-size: 0.95rem; animation: rise .8s .4s both; }
+  #splash .bar { background: #25304c; width: 220px; animation: rise .8s .5s both; }
+  @keyframes pop { from { transform: scale(.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  @keyframes rise { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+  /* ---------- Mobile: bottom navigation ---------- */
+  @media (max-width: 720px) {
+    body { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
+    aside {
+      grid-row: 2; flex-direction: row; border-right: 0; border-top: 1px solid var(--line);
+      padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px)); justify-content: space-around;
+    }
+    .logo, .spacer, .side-tools { display: none; }
+    .nav { flex-direction: row; padding: 0; }
+    .nav button { flex: 1; }
+    .nav button[aria-selected="true"]::before { left: 20%; right: 20%; top: -6px; bottom: auto; width: auto; height: 3px; border-radius: 0 0 4px 4px; }
+    .work { grid-row: 1; padding-top: env(safe-area-inset-top, 0px); }
+    .sub, .status span { display: none; }
+    main { margin: 6px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #splash .big, #splash .name, #splash .tag, #splash .bar { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Shared logo symbol -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1f4fd8"/><stop offset="1" stop-color="#13b5c8"/>
+    </linearGradient>
+    <symbol id="logo" viewBox="0 0 48 48">
+      <rect width="48" height="48" rx="12" fill="url(#lg)"/>
+      <path d="M16 34V14h9.5a6.5 6.5 0 0 1 0 13H16" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="34" cy="34" r="3" fill="#fff" opacity=".9"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div id="splash" role="status" aria-live="polite">
+  <svg class="big"><use href="#logo"/></svg>
+  <div class="name">Pro Suite</div>
+  <div class="tag">Whiteboard, documents, slides and classroom in one place</div>
+  <div class="bar"><i id="splash-bar"></i></div>
+</div>
+
+<aside>
+  <svg class="logo" aria-label="Pro"><use href="#logo"/></svg>
+  <nav class="nav" id="nav" role="tablist" aria-label="Pro apps"></nav>
+  <div class="spacer"></div>
+  <div class="side-tools">
+    <button class="icon-btn" id="reload" type="button" title="Reload app" aria-label="Reload app">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
+    </button>
+    <button class="icon-btn" id="fullscreen" type="button" title="Full screen (F)" aria-label="Full screen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg>
+    </button>
+    <button class="icon-btn" id="theme" type="button" title="Light / dark" aria-label="Switch theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</aside>
+
+<div class="work">
+  <div class="topbar">
+    <span class="title" id="cur-title"></span>
+    <span class="sub" id="cur-sub"></span>
+    <div class="status"><i class="dot" id="dot"></i><span id="status-text">Connecting</span></div>
+  </div>
+  <main id="stage"></main>
+</div>
+
+<script>
+  const ICONS = {
+    whiteboard: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+    document: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
+    slides: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8M7 12l3-3 3 2 4-4"/>',
+    classroom: '<path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5"/>'
+  };
+
+  const APPS = [
+    { id: "whiteboard", name: "Whiteboard", title: "Pro Whiteboard", desc: "Sketch, teach and brainstorm on a shared canvas", url: "https://prowhiteboard.in" },
+    { id: "document",   name: "Document",   title: "Pro Document",   desc: "Write and edit documents",                    url: "https://prodocument.in" },
+    { id: "slides",     name: "Slides",     title: "Pro Slides",     desc: "Create and present slide decks",              url: "https://newton-web-ux.github.io/Pro-MEET/" },
+    { id: "classroom",  name: "Classroom",  title: "Pro Classroom",  desc: "Classes, assignments and learning",           url: "https://newton-web-ux.github.io/Proclassroom-/" }
+  ];
+
+  const nav = document.getElementById("nav");
+  const stage = document.getElementById("stage");
+  const dot = document.getElementById("dot");
+  const statusText = document.getElementById("status-text");
+  const S = {};          // per-app state
+  let current = null;
+
+  function setStatus(kind, text) {
+    dot.className = "dot " + (kind || "");
+    statusText.textContent = text;
+  }
+
+  function build(app, index) {
+    // sidebar button
+    const b = document.createElement("button");
+    b.type = "button"; b.id = "tab-" + app.id; b.setAttribute("role", "tab");
+    b.title = app.title + " (Alt+" + (index + 1) + ")";
+    b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + ICONS[app.id] + '</svg><span>' + app.name + '</span>';
+    b.addEventListener("click", () => select(app.id));
+    nav.appendChild(b);
+
+    // panel
+    const panel = document.createElement("div");
+    panel.className = "panel";
+    const iframe = document.createElement("iframe");
+    iframe.title = app.title;
+    iframe.allow = "camera; microphone; display-capture; fullscreen; clipboard-read; clipboard-write; autoplay";
+    iframe.allowFullscreen = true;
+
+    const overlay = document.createElement("div");
+    overlay.className = "overlay";
+    overlay.innerHTML =
+      '<svg class="mark"><use href="#logo"/></svg>' +
+      '<h2>Opening ' + app.title + '</h2>' +
+      '<p class="msg">' + app.desc + '</p>' +
+      '<div class="bar"><i></i></div>' +
+      '<button class="retry" type="button">Try again</button>';
+    const bar = overlay.querySelector(".bar i");
+    const msg = overlay.querySelector(".msg");
+    overlay.querySelector(".retry").addEventListener("click", () => load(app.id));
+
+    panel.append(iframe, overlay);
+    stage.appendChild(panel);
+    S[app.id] = { app, b, panel, iframe, overlay, bar, msg, loaded: false, started: false, tick: null, timeout: null };
+
+    iframe.addEventListener("load", () => {
+      const s = S[app.id];
+      if (!s.started) return;
+      s.loaded = true;
+      clearInterval(s.tick); clearTimeout(s.timeout);
+      s.bar.style.width = "100%";
+      setTimeout(() => s.overlay.classList.add("hide"), 250);
+      if (current === app.id) setStatus("ok", "Connected");
+    });
+  }
+
+  function load(id) {
+    const s = S[id];
+    s.loaded = false; s.started = true;
+    s.overlay.classList.remove("hide", "slow");
+    s.msg.textContent = s.app.desc;
+    let p = 8; s.bar.style.width = p + "%";
+    clearInterval(s.tick); clearTimeout(s.timeout);
+    s.tick = setInterval(() => { p += (90 - p) * 0.08; s.bar.style.width = p.toFixed(1) + "%"; }, 300);
+    // After 12s, offer a retry (the app may be slow or may not allow embedding)
+    s.timeout = setTimeout(() => {
+      if (s.loaded) return;
+      s.overlay.classList.add("slow");
+      s.msg.textContent = "This is taking longer than expected. Check your connection, then try again.";
+      if (current === id) setStatus("off", "Slow to respond");
+    }, 12000);
+    if (current === id) setStatus("", "Connecting");
+    s.iframe.src = s.app.url;
+  }
+
+  function select(id) {
+    current = id;
+    const s = S[id];
+    APPS.forEach(a => {
+      const on = a.id === id;
+      S[a.id].panel.classList.toggle("active", on);
+      S[a.id].b.setAttribute("aria-selected", on);
+    });
+    document.getElementById("cur-title").textContent = s.app.title;
+    document.getElementById("cur-sub").textContent = s.app.desc;
+    document.title = s.app.title + " | Pro Suite";
+    if (!s.started) load(id);
+    else setStatus(s.loaded ? "ok" : "", s.loaded ? "Connected" : "Connecting");
+    try { localStorage.setItem("pro-last", id); } catch (e) {}
+    history.replaceState(null, "", "#" + id);
+  }
+
+  APPS.forEach(build);
+
+  // ---- Controls ----
+  document.getElementById("reload").addEventListener("click", () => current && load(current));
+  const toggleFull = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
+  document.getElementById("fullscreen").addEventListener("click", toggleFull);
+
+  const root = document.documentElement;
+  document.getElementById("theme").addEventListener("click", () => {
+    const dark = root.dataset.theme === "dark" || (!root.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
+    root.dataset.theme = dark ? "light" : "dark";
+    try { localStorage.setItem("pro-theme", root.dataset.theme); } catch (e) {}
+  });
+
+  // Keyboard shortcuts: Alt+1..4 switch apps
+  document.addEventListener("keydown", e => {
+    if (e.altKey && e.key >= "1" && e.key <= String(APPS.length)) {
+      e.preventDefault(); select(APPS[+e.key - 1].id);
+    }
+  });
+
+  window.addEventListener("online", () => current && setStatus(S[current].loaded ? "ok" : "", S[current].loaded ? "Connected" : "Connecting"));
+  window.addEventListener("offline", () => setStatus("off", "Offline"));
+
+  // ---- Restore preferences ----
+  try { const t = localStorage.getItem("pro-theme"); if (t) root.dataset.theme = t; } catch (e) {}
+  let start = location.hash.slice(1);
+  if (!S[start]) { try { start = localStorage.getItem("pro-last"); } catch (e) {} }
+  if (!S[start]) start = APPS[0].id;
+
+  // ---- Splash screen ----
+  const splashBar = document.getElementById("splash-bar");
+  const splash = document.getElementById("splash");
+  requestAnimationFrame(() => { splashBar.style.transition = "width 1.6s ease-in-out"; splashBar.style.width = "100%"; });
+  setTimeout(() => { splash.classList.add("gone"); select(start); }, 1900);
+  setTimeout(() => splash.remove(), 2700);
+</script>
+</body>
+</html>
