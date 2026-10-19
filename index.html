@@ -602,9 +602,9 @@
   const upg = document.createElement("div");
   upg.className = "panel home"; upg.id = "upgrade";
   stage.appendChild(upg);
-  // payMode: "suite" = Pro Suite plans, "single" = pay for one app. slidesPay: Pro Slide plans are showing.
-  let billing = "monthly", upgBuilt = false, payMode = "suite", slidesPay = false;
-  const payScope = () => payMode === "suite" ? "suite" : "slides";
+  // payMode: "suite" = Pro Suite plans, "single" = pay for one app (each app takes payment inside the app).
+  let billing = "monthly", upgBuilt = false, payMode = "suite";
+  const payScope = () => "suite";   // payments made on this page are always Pro Suite
 
   function upiLink() {
     const sc = payScope(), p = PAY.PLANS[sc][billing];
@@ -621,7 +621,6 @@
     $("pd-yearly").textContent = "About \u20b9" + Math.round(pl.yearly.amount / 12) + " a month";
     $("save-tag").textContent = "Save " + save + "%";
     $("feat-list").innerHTML = PAY.FEATURES[sc].map(f => "<li>" + f + "</li>").join("");
-    $("email-hint").textContent = sc === "slides" ? "Use the same Google account you sign in to Pro Slide with, so we can unlock it." : "";
     upg.querySelectorAll(".plan").forEach(b => {
       const on = b.dataset.b === billing;
       b.classList.toggle("sel", on); b.setAttribute("aria-checked", on);
@@ -636,11 +635,9 @@
 
   function refreshMode() {
     upg.querySelectorAll(".mode").forEach(b => { const on = b.dataset.m === payMode; b.classList.toggle("sel", on); b.setAttribute("aria-checked", on); });
-    const showPay = payMode === "suite" || slidesPay;
-    $("suite-pane").hidden = !showPay;
-    $("single-pane").hidden = !(payMode === "single" && !slidesPay);
-    $("up-back").hidden = !(payMode === "single" && slidesPay);
-    if (showPay) refreshPlan();
+    $("suite-pane").hidden = payMode !== "suite";
+    $("single-pane").hidden = payMode !== "single";
+    if (payMode === "suite") refreshPlan();
   }
 
   function renderUpgrade() {
@@ -651,10 +648,10 @@
         "<div class='clock'>Pay for the one app you need, or unlock all four with Pro Suite.</div>" +
         "<h2 class='up-h'>Choose how you want to upgrade</h2>" +
         "<div class='modes' role='radiogroup' aria-label='Upgrade type'>" +
-          "<button type='button' class='mode' data-m='single' role='radio'><span class='mi'>" + icon("whiteboard") + "</span><span><b>Pay for one app</b><span class='d'>Upgrade a single app. Pro Slide is paid for right here.</span></span></button>" +
+          "<button type='button' class='mode' data-m='single' role='radio'><span class='mi'>" + icon("whiteboard") + "</span><span><b>Pay for one app</b><span class='d'>Upgrade a single app, from inside that app.</span></span></button>" +
           "<button type='button' class='mode' data-m='suite' role='radio'><span class='tag'>Best value</span><span class='mi'>" + icon("upgrade") + "</span><span><b>Pay in Pro Suite</b><span class='d'>One plan unlocks all four apps.</span></span></button>" +
         "</div>" +
-        "<div id='suite-pane'><button type='button' class='linkish' id='up-back' hidden>\u2190 Choose another app</button><h2 class='up-h' id='plans-h'></h2>" +
+        "<div id='suite-pane'><h2 class='up-h' id='plans-h'></h2>" +
           "<div class='plans' role='radiogroup' aria-label='Billing period'>" +
             "<button type='button' class='plan' data-b='monthly' role='radio'><span class='pn'>Monthly</span><span class='pp' id='pp-monthly'></span><span class='pd'>Billed every month</span></button>" +
             "<button type='button' class='plan' data-b='yearly' role='radio'><span class='tag' id='save-tag'></span><span class='pn'>Yearly</span><span class='pp' id='pp-yearly'></span><span class='pd' id='pd-yearly'></span></button>" +
@@ -665,7 +662,6 @@
             "<div class='box'><h3>2. Confirm your payment</h3>" +
               "<label class='field'>Full name<input id='f-name' autocomplete='name' maxlength='80'></label>" +
               "<label class='field'>Email<input id='f-email' type='email' autocomplete='email' maxlength='120'></label>" +
-              "<div class='up-note' id='email-hint' style='margin:-6px 0 12px'></div>" +
               "<label class='field'>UPI reference number (UTR, 12 digits)<input id='f-utr' inputmode='numeric' maxlength='14' placeholder='e.g. 412345678901'></label>" +
               "<input id='f-web' tabindex='-1' autocomplete='off' aria-hidden='true' style='position:absolute;left:-9999px'>" +
               "<button type='button' class='primary' id='up-submit'>I have paid, submit for approval</button>" +
@@ -674,16 +670,12 @@
           "</div><div class='up-note'>Access is unlocked after we verify your payment manually, usually within a day.</div></div>" +
         "<div id='single-pane' hidden><h2 class='up-h'>Pick the app you want to upgrade</h2><div class='applist'>" +
           APPS.map(a => "<div class='approw'><span class='ic'>" + icon(a.id) + "</span><span class='t'><b>" + a.title + "</b><span>" + a.desc + "</span></span>" +
-            (a.id === "slides"
-              ? "<button type='button' class='btn' data-pay='slides'>Pay for Pro Slide</button>"
-              : "<button type='button' class='btn' data-app='" + a.id + "'>Upgrade in " + a.name + "</button>") + "</div>").join("") +
-        "</div><div class='up-note'>Pro Slide is paid for right here. The other apps take payment inside the app. Want everything? Choose Pay in Pro Suite above.</div></div></div>";
+            "<button type='button' class='btn' data-app='" + a.id + "'>Upgrade in " + a.name + "</button></div>").join("") +
+        "</div><div class='up-note'>Each app takes payment inside the app. Want everything? Choose Pay in Pro Suite above.</div></div></div>";
       $("upi-id").textContent = PAY.UPI_ID;
       upg.querySelectorAll(".plan").forEach(b => b.addEventListener("click", () => { billing = b.dataset.b; refreshPlan(); }));
-      upg.querySelectorAll(".mode").forEach(b => b.addEventListener("click", () => { payMode = b.dataset.m; slidesPay = false; refreshMode(); }));
+      upg.querySelectorAll(".mode").forEach(b => b.addEventListener("click", () => { payMode = b.dataset.m; refreshMode(); }));
       upg.querySelectorAll("[data-app]").forEach(b => b.addEventListener("click", () => { select(b.dataset.app); toast("Look for the upgrade option inside " + S[b.dataset.app].app.title); }));
-      upg.querySelectorAll("[data-pay]").forEach(b => b.addEventListener("click", () => { slidesPay = true; refreshMode(); }));
-      $("up-back").addEventListener("click", () => { slidesPay = false; refreshMode(); });
       $("copy-upi").addEventListener("click", () => navigator.clipboard.writeText(PAY.UPI_ID).then(() => toast("UPI ID copied"), () => toast("Copy failed")));
       $("up-submit").addEventListener("click", submitPay);
       $("up-check").addEventListener("click", checkStatus);
@@ -746,7 +738,7 @@
     const d = e.data;
     if (!d || d.source !== "pro-app" || d.type !== "open-upgrade") return;
     if (!APPS.some(a => new URL(a.url).origin === e.origin)) return;   // only our four apps
-    payMode = "suite"; slidesPay = false;
+    payMode = "suite";
     select("upgrade");
   });
 
