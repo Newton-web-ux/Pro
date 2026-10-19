@@ -96,53 +96,6 @@
   .card small { color:var(--muted); font-size:.76rem; margin-top:auto; }
   .tips { margin-top:26px; color:var(--muted); font-size:.88rem; line-height:1.7; }
 
-  /* Upgrade and payment */
-  .upgrade-top { display:flex; align-items:center; gap:6px; border:0; border-radius:9px; padding:7px 12px; font-size:.85rem; font-weight:700; color:#fff; background:linear-gradient(135deg,var(--accent),var(--accent2)); }
-  .upgrade-top:hover { filter:brightness(1.08); }
-  .upgrade-top svg.i { width:16px; height:16px; }
-  .up-wrap { max-width:960px; margin:0 auto; }
-  .plans { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin-bottom:16px; }
-  .plan { position:relative; text-align:left; border:2px solid var(--line); background:var(--bg); border-radius:14px; padding:18px; display:flex; flex-direction:column; gap:4px; }
-  .plan:hover { border-color:var(--accent); }
-  .plan.sel { border-color:var(--accent); background:var(--hover); }
-  .plan .pn { font-weight:700; }
-  .plan .pp { font-size:1.8rem; font-weight:800; letter-spacing:-.02em; }
-  .plan .pp small { font-size:.9rem; font-weight:500; color:var(--muted); }
-  .plan .pd { color:var(--muted); font-size:.85rem; }
-  .plan .tag { position:absolute; top:12px; right:12px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; font-size:.72rem; font-weight:700; padding:3px 9px; border-radius:999px; }
-  .up-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:14px; }
-  .box { border:1px solid var(--line); border-radius:14px; padding:18px; background:var(--bg); }
-  .box h3 { margin:0 0 12px; font-size:1rem; }
-  .feat { list-style:none; margin:0; padding:0; display:grid; gap:9px; font-size:.92rem; }
-  .feat li::before { content:"\2713"; color:var(--accent); font-weight:800; margin-right:9px; }
-  .qr { background:#fff; padding:10px; border-radius:12px; display:inline-block; line-height:0; }
-  .payline { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:12px; font-size:.88rem; }
-  .field { display:grid; gap:5px; margin-bottom:12px; font-size:.85rem; color:var(--muted); }
-  .field input { font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line); border-radius:9px; padding:10px 12px; }
-  .primary { width:100%; border:0; border-radius:10px; padding:12px; font-weight:700; color:#fff; background:linear-gradient(135deg,var(--accent),var(--accent2)); }
-  .primary:disabled { opacity:.6; cursor:not-allowed; }
-  .linkish { border:0; background:none; color:var(--accent); font-size:.85rem; font-weight:600; padding:8px 0 0; }
-  .up-msg { min-height:1.4em; margin-top:10px; font-size:.88rem; color:var(--muted); }
-  .up-msg.success { color:#1fa971; } .up-msg.error { color:#d64545; }
-  .up-note { margin-top:14px; color:var(--muted); font-size:.8rem; }
-
-  .up-h { margin:0 0 12px; font-size:1.05rem; }
-  .modes { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-bottom:22px; }
-  .mode { position:relative; text-align:left; border:2px solid var(--line); background:var(--bg); border-radius:14px; padding:16px 18px; display:flex; gap:12px; align-items:flex-start; }
-  .mode:hover { border-color:var(--accent); }
-  .mode.sel { border-color:var(--accent); background:var(--hover); }
-  .mode .mi { width:40px; height:40px; border-radius:11px; display:grid; place-items:center; color:#fff; background:linear-gradient(135deg,var(--accent),var(--accent2)); flex:none; }
-  .mode b { display:block; margin-bottom:3px; }
-  .mode span.d { color:var(--muted); font-size:.86rem; }
-  .mode .tag { position:absolute; top:10px; right:10px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; font-size:.7rem; font-weight:700; padding:2px 8px; border-radius:999px; }
-  .applist { display:grid; gap:10px; }
-  .approw { display:flex; align-items:center; gap:14px; border:1px solid var(--line); background:var(--bg); border-radius:14px; padding:14px 16px; flex-wrap:wrap; }
-  .approw .ic { width:42px; height:42px; border-radius:11px; display:grid; place-items:center; color:#fff; background:linear-gradient(135deg,var(--accent),var(--accent2)); flex:none; }
-  .approw .t { flex:1; min-width:160px; }
-  .approw .t b { display:block; }
-  .approw .t span { color:var(--muted); font-size:.86rem; }
-  .approw .btn { white-space:nowrap; }
-
   /* Notes drawer */
   #notes { position:fixed; top:0; right:0; bottom:0; width:min(360px,100%); z-index:60; background:var(--panel); border-left:1px solid var(--line); box-shadow:var(--shadow); transform:translateX(100%); transition:transform .25s; display:flex; flex-direction:column; }
   #notes.open { transform:none; }
@@ -244,7 +197,6 @@
     <span class="title" id="cur-title"></span>
     <span class="sub" id="cur-sub"></span>
     <div class="status"><i class="dot" id="dot"></i><span id="status-text">Ready</span></div>
-    <button class="upgrade-top" id="upgrade-top" type="button"><span id="up-ic"></span><span>Upgrade</span></button>
     <button class="search-btn" id="open-pal" type="button" aria-label="Search and commands"><span id="search-ic"></span><span>Search</span><kbd>Ctrl K</kbd></button>
   </div>
   <main id="stage"></main>
@@ -269,7 +221,6 @@
       <kbd>Alt 0</kbd><span>Home</span>
       <kbd>Alt 1 to 4</kbd><span>Switch app</span>
       <kbd>Alt S</kbd><span>Split view on or off (Shift+click an app to split with it)</span>
-      <kbd>Alt U</kbd><span>Upgrade to Pro</span>
       <kbd>Alt N</kbd><span>Quick notes</span>
       <kbd>Alt Z</kbd><span>Focus mode</span>
       <kbd>Alt F</kbd><span>Full screen</span>
@@ -282,7 +233,6 @@
 <button class="focus-exit" id="focus-exit" type="button">Exit focus mode (Esc)</button>
 <div class="toasts" id="toasts" aria-live="polite"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
   /* ---------- Helpers ---------- */
   const P = {
@@ -292,7 +242,6 @@
     slides:'<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8M7 12l3-3 3 2 4-4"/>',
     classroom:'<path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5"/>',
     search:'<circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>',
-    upgrade:'<path d="m12 3 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9z"/>',
     split:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/>',
     notes:'<path d="M5 3h11l3 3v15H5z"/><path d="M8 9h8M8 13h8M8 17h5"/>',
     focus:'<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
@@ -322,7 +271,6 @@
   const stage = $("stage"), nav = $("nav"), dot = $("dot"), statusText = $("status-text");
   const S = {};
   let current = "home", split = null;
-  const isPage = c => c === "home" || c === "upgrade";
   const settings = Object.assign({ accent:0, start:"home", skipSplash:false }, ls.get("pro-settings", {}));
   const root = document.documentElement;
 
@@ -421,8 +369,7 @@
   function mark(id) { const r = ls.get("pro-recent", {}); r[id] = Date.now(); ls.set("pro-recent", r); }
   function layout() {
     home.classList.toggle("active", current === "home");
-    upg.classList.toggle("active", current === "upgrade");
-    const splitOn = split && !isPage(current);
+    const splitOn = split && current !== "home";
     APPS.forEach(a => {
       const s = S[a.id];
       s.panel.classList.toggle("active", current === a.id);
@@ -431,16 +378,14 @@
       s.b.classList.toggle("split-on", !!splitOn && split === a.id);
     });
     $("tab-home").setAttribute("aria-selected", current === "home");
-    $("upgrade-btn").classList.toggle("on", current === "upgrade");
     stage.classList.toggle("is-split", !!splitOn);
     $("split-btn").classList.toggle("on", !!splitOn);
     let title, sub;
     if (current === "home") { title = "Home"; sub = "Pick an app to get started"; }
-    else if (current === "upgrade") { title = "Upgrade to Pro"; sub = "Choose a plan and pay with UPI"; }
     else { title = S[current].app.title + (splitOn ? " + " + S[split].app.name : ""); sub = splitOn ? "Split view" : S[current].app.desc; }
     $("cur-title").textContent = title; $("cur-sub").textContent = sub;
-    document.title = title + " | Pro Suite";
-    if (isPage(current)) setStatus("ok", "Ready");
+    document.title = (current === "home" ? "Home" : title) + " | Pro Suite";
+    if (current === "home") setStatus("ok", "Ready");
     else setStatus(S[current].loaded ? "ok" : "", S[current].loaded ? "Connected" : "Connecting");
     history.replaceState(null, "", "#" + current);
   }
@@ -448,19 +393,18 @@
   function select(id) {
     current = id;
     if (id === "home") { renderHome(); }
-    else if (id === "upgrade") { renderUpgrade(); }
     else { if (split === id) split = null; mark(id); ensure(id); ls.set("pro-last", id); }
-    if (split && !isPage(current)) ensure(split);
+    if (split && current !== "home") ensure(split);
     layout();
   }
   function openSplit(id) {
-    if (isPage(current) || current === id) current = (APPS.find(a => a.id !== id)).id;
+    if (current === "home" || current === id) current = (APPS.find(a => a.id !== id)).id;
     split = id; mark(current); mark(id); ensure(current); ensure(id); layout();
   }
   function closeSplit() { split = null; layout(); }
   function toggleSplit() {
-    if (split && !isPage(current)) return closeSplit();
-    if (isPage(current)) return toast("Open an app first, then split");
+    if (split && current !== "home") return closeSplit();
+    if (current === "home") return toast("Open an app first, then split");
     const i = APPS.findIndex(a => a.id === current);
     openSplit(APPS[(i + 1) % APPS.length].id);
   }
@@ -474,11 +418,10 @@
   APPS.forEach(build);
 
   const TOOLS = [
-    ["upgrade-btn","upgrade","Upgrade to Pro (Alt+U)", () => select("upgrade")],
     ["split-btn","split","Split view (Alt+S)", toggleSplit],
     ["notes-btn","notes","Quick notes (Alt+N)", () => toggleNotes()],
     ["focus-btn","focus","Focus mode (Alt+Z)", () => setFocus(true)],
-    ["reload-btn","reload","Reload app", () => { if (isPage(current)) return; load(current); if (split) load(split); }],
+    ["reload-btn","reload","Reload app", () => { if (current === "home") return; load(current); if (split) load(split); }],
     ["full-btn","full","Full screen (Alt+F)", toggleFull],
     ["theme-btn","theme","Light or dark", () => { const n = isDark() ? "light" : "dark"; applyTheme(n); ls.set("pro-theme", n); }],
     ["set-btn","settings","Settings and shortcuts", () => openModal("set-bg")]
@@ -489,8 +432,6 @@
     b.innerHTML = icon(ic); b.addEventListener("click", fn); $("tools").appendChild(b);
   });
   $("search-ic").innerHTML = icon("search");
-  $("up-ic").innerHTML = icon("upgrade");
-  $("upgrade-top").addEventListener("click", () => select("upgrade"));
   $("logo-home").addEventListener("click", () => select("home"));
 
   /* ---------- Fullscreen and focus ---------- */
@@ -526,8 +467,7 @@
 
   let sel = 0, items = [];
   function commands() {
-    const c = [{ l:"Go to Home", k:"Alt 0", f:() => select("home"), ic:"home" },
-      { l:"Upgrade to Pro", k:"Alt U", f:() => select("upgrade"), ic:"upgrade" }];
+    const c = [{ l:"Go to Home", k:"Alt 0", f:() => select("home"), ic:"home" }];
     APPS.forEach((a, i) => c.push({ l:"Open " + a.title, k:"Alt " + (i + 1), f:() => select(a.id), ic:a.id }));
     APPS.forEach(a => c.push({ l:"Split view with " + a.title, k:"", f:() => openSplit(a.id), ic:"split" }));
     c.push({ l:"Close split view", k:"", f:closeSplit, ic:"split" },
@@ -572,7 +512,6 @@
     const k = e.key.toLowerCase();
     if (k === "0") select("home");
     else if (k >= "1" && k <= String(APPS.length)) select(APPS[+k - 1].id);
-    else if (k === "u") select("upgrade");
     else if (k === "s") toggleSplit();
     else if (k === "n") toggleNotes();
     else if (k === "z") setFocus(!document.body.classList.contains("focus"));
@@ -584,170 +523,12 @@
   window.addEventListener("online", () => { toast("Back online"); layout(); });
   window.addEventListener("offline", () => { setStatus("off", "Offline"); toast("You are offline"); });
 
-  /* ---------- Upgrade and payment page ---------- */
-  const PAY = {
-    API_URL: "https://script.google.com/macros/s/AKfycbxWcCRNAT2Oq-PaiY71uxL9dlZvU9oDZ2ifdvvAjl0g1gSz1FrQPlL1z20oRGHHiYXX/exec",   // combined Code.gs web app URL
-    UPI_ID: "banerjeearnab.live@oksbi",
-    PAYEE: "Newtonian Academy",
-    NAMES: { suite: "Pro Suite", slides: "Pro Slide" },
-    PLANS: {
-      suite:  { monthly: { amount: 499,  label: "\u20b9499" },  yearly: { amount: 2499, label: "\u20b92,499" } },
-      slides: { monthly: { amount: 199,  label: "\u20b9199" },  yearly: { amount: 1999, label: "\u20b91,999" } }
-    },
-    FEATURES: {
-      suite:  ["Unlimited boards and folders", "Unlimited images and files", "All graphs and shapes", "Unlimited PDF and PNG export", "PPT and video export", "20-step version history"],
-      slides: ["Unlimited presentations", "Unlimited images and charts", "All shapes, icons and math tools", "Unlimited .pptx exports", "Cloud sync to Google Drive", "Priority support"]
-    }
-  };
-  const upg = document.createElement("div");
-  upg.className = "panel home"; upg.id = "upgrade";
-  stage.appendChild(upg);
-  // payMode: "suite" = Pro Suite plans, "single" = pay for one app (each app takes payment inside the app).
-  let billing = "monthly", upgBuilt = false, payMode = "suite";
-  const payScope = () => "suite";   // payments made on this page are always Pro Suite
-
-  function upiLink() {
-    const sc = payScope(), p = PAY.PLANS[sc][billing];
-    return "upi://pay?pa=" + PAY.UPI_ID + "&pn=" + encodeURIComponent(PAY.PAYEE) + "&am=" + p.amount + "&cu=INR&tn=" + encodeURIComponent(PAY.NAMES[sc] + " " + billing);
-  }
-  function say(text, kind) { const m = $("up-status"); m.textContent = text; m.className = "up-msg " + (kind || ""); }
-
-  function refreshPlan() {
-    const sc = payScope(), pl = PAY.PLANS[sc];
-    const save = Math.round((1 - pl.yearly.amount / (pl.monthly.amount * 12)) * 100);
-    $("plans-h").textContent = PAY.NAMES[sc] + " plans";
-    $("pp-monthly").innerHTML = pl.monthly.label + "<small> / month</small>";
-    $("pp-yearly").innerHTML = pl.yearly.label + "<small> / year</small>";
-    $("pd-yearly").textContent = "About \u20b9" + Math.round(pl.yearly.amount / 12) + " a month";
-    $("save-tag").textContent = "Save " + save + "%";
-    $("feat-list").innerHTML = PAY.FEATURES[sc].map(f => "<li>" + f + "</li>").join("");
-    upg.querySelectorAll(".plan").forEach(b => {
-      const on = b.dataset.b === billing;
-      b.classList.toggle("sel", on); b.setAttribute("aria-checked", on);
-    });
-    $("amt").textContent = pl[billing].label + (billing === "monthly" ? " / month" : " / year");
-    $("upi-open").href = upiLink();
-    const q = $("qr"); q.innerHTML = "";
-    if (window.QRCode) new QRCode(q, { text: upiLink(), width: 200, height: 200, correctLevel: QRCode.CorrectLevel.M });
-    else q.textContent = "QR unavailable. Use the UPI ID below.";
-    $("up-submit").disabled = false;
-  }
-
-  function refreshMode() {
-    upg.querySelectorAll(".mode").forEach(b => { const on = b.dataset.m === payMode; b.classList.toggle("sel", on); b.setAttribute("aria-checked", on); });
-    $("suite-pane").hidden = payMode !== "suite";
-    $("single-pane").hidden = payMode !== "single";
-    if (payMode === "suite") refreshPlan();
-  }
-
-  function renderUpgrade() {
-    if (!upgBuilt) {
-      upgBuilt = true;
-      upg.innerHTML =
-        "<div class='up-wrap'><h1>Upgrade to Pro</h1>" +
-        "<div class='clock'>Pay for the one app you need, or unlock all four with Pro Suite.</div>" +
-        "<h2 class='up-h'>Choose how you want to upgrade</h2>" +
-        "<div class='modes' role='radiogroup' aria-label='Upgrade type'>" +
-          "<button type='button' class='mode' data-m='single' role='radio'><span class='mi'>" + icon("whiteboard") + "</span><span><b>Pay for one app</b><span class='d'>Upgrade a single app, from inside that app.</span></span></button>" +
-          "<button type='button' class='mode' data-m='suite' role='radio'><span class='tag'>Best value</span><span class='mi'>" + icon("upgrade") + "</span><span><b>Pay in Pro Suite</b><span class='d'>One plan unlocks all four apps.</span></span></button>" +
-        "</div>" +
-        "<div id='suite-pane'><h2 class='up-h' id='plans-h'></h2>" +
-          "<div class='plans' role='radiogroup' aria-label='Billing period'>" +
-            "<button type='button' class='plan' data-b='monthly' role='radio'><span class='pn'>Monthly</span><span class='pp' id='pp-monthly'></span><span class='pd'>Billed every month</span></button>" +
-            "<button type='button' class='plan' data-b='yearly' role='radio'><span class='tag' id='save-tag'></span><span class='pn'>Yearly</span><span class='pp' id='pp-yearly'></span><span class='pd' id='pd-yearly'></span></button>" +
-          "</div><div class='up-grid'>" +
-            "<div class='box'><h3>What you get</h3><ul class='feat' id='feat-list'></ul></div>" +
-            "<div class='box'><h3>1. Pay <span id='amt'></span></h3><div style='text-align:center'><div class='qr' id='qr'></div></div>" +
-              "<div class='payline'><span>UPI ID: <b id='upi-id'></b></span><button type='button' class='btn' id='copy-upi'>Copy</button><a class='btn' id='upi-open' href='#' style='text-decoration:none;color:inherit'>Open UPI app</a></div></div>" +
-            "<div class='box'><h3>2. Confirm your payment</h3>" +
-              "<label class='field'>Full name<input id='f-name' autocomplete='name' maxlength='80'></label>" +
-              "<label class='field'>Email<input id='f-email' type='email' autocomplete='email' maxlength='120'></label>" +
-              "<label class='field'>UPI reference number (UTR, 12 digits)<input id='f-utr' inputmode='numeric' maxlength='14' placeholder='e.g. 412345678901'></label>" +
-              "<input id='f-web' tabindex='-1' autocomplete='off' aria-hidden='true' style='position:absolute;left:-9999px'>" +
-              "<button type='button' class='primary' id='up-submit'>I have paid, submit for approval</button>" +
-              "<button type='button' class='linkish' id='up-check'>Already submitted? Check my status</button>" +
-              "<div class='up-msg' id='up-status' role='status' aria-live='polite'></div></div>" +
-          "</div><div class='up-note'>Access is unlocked after we verify your payment manually, usually within a day.</div></div>" +
-        "<div id='single-pane' hidden><h2 class='up-h'>Pick the app you want to upgrade</h2><div class='applist'>" +
-          APPS.map(a => "<div class='approw'><span class='ic'>" + icon(a.id) + "</span><span class='t'><b>" + a.title + "</b><span>" + a.desc + "</span></span>" +
-            "<button type='button' class='btn' data-app='" + a.id + "'>Upgrade in " + a.name + "</button></div>").join("") +
-        "</div><div class='up-note'>Each app takes payment inside the app. Want everything? Choose Pay in Pro Suite above.</div></div></div>";
-      $("upi-id").textContent = PAY.UPI_ID;
-      upg.querySelectorAll(".plan").forEach(b => b.addEventListener("click", () => { billing = b.dataset.b; refreshPlan(); }));
-      upg.querySelectorAll(".mode").forEach(b => b.addEventListener("click", () => { payMode = b.dataset.m; refreshMode(); }));
-      upg.querySelectorAll("[data-app]").forEach(b => b.addEventListener("click", () => { select(b.dataset.app); toast("Look for the upgrade option inside " + S[b.dataset.app].app.title); }));
-      $("copy-upi").addEventListener("click", () => navigator.clipboard.writeText(PAY.UPI_ID).then(() => toast("UPI ID copied"), () => toast("Copy failed")));
-      $("up-submit").addEventListener("click", submitPay);
-      $("up-check").addEventListener("click", checkStatus);
-      ["f-name", "f-email", "f-utr"].forEach(id => $(id).addEventListener("input", () => { $("up-submit").disabled = false; }));
-      const saved = ls.get("pro-request", null);
-      if (saved && saved.email) $("f-email").value = saved.email;
-    }
-    refreshMode();
-  }
-
-  function backendReady() {
-    if (PAY.API_URL.indexOf("PASTE_") === 0) { say("The payment backend is not connected yet. Add your Apps Script URL to PAY.API_URL in index.html.", "error"); return false; }
-    return true;
-  }
-  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-  async function submitPay() {
-    const scope = payScope();
-    const name = $("f-name").value.trim(), email = $("f-email").value.trim().toLowerCase(), utr = $("f-utr").value.replace(/\s/g, "");
-    if (name.length < 2) return say("Please enter your name.", "error");
-    if (!EMAIL_RE.test(email)) return say("Please enter a valid email address.", "error");
-    if (!/^\d{12}$/.test(utr)) return say("Enter the 12-digit UPI reference number from your payment receipt.", "error");
-    if (!backendReady()) return;
-    const btn = $("up-submit"); btn.disabled = true; say("Submitting\u2026", "");
-    try {
-      const res = await fetch(PAY.API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify({ action: "submit", scope, name, email, billing, utr, website: $("f-web").value }) });
-      const data = await res.json();
-      if (!data.ok) throw new Error(data.error || "Submission failed");
-      ls.set("pro-request", { email, id: data.requestId, scope, billing });
-      say("Request " + data.requestId + " received. " + (scope === "slides" ? "Pro Slide unlocks the next time you sign in after approval." : "You will get access after approval."), "success");
-      toast("Payment request submitted");
-    } catch (err) {
-      btn.disabled = false;
-      const known = err && err.message && !/fetch|network|json|unexpected/i.test(err.message);
-      say(known ? err.message : "Could not reach the server. Check your connection and try again.", "error");
-    }
-  }
-
-  async function checkStatus() {
-    const email = $("f-email").value.trim().toLowerCase();
-    if (!EMAIL_RE.test(email)) return say("Enter your email above, then check again.", "error");
-    if (!backendReady()) return;
-    say("Checking\u2026", "");
-    try {
-      const res = await fetch(PAY.API_URL + "?action=status&email=" + encodeURIComponent(email));
-      const d = await res.json();
-      if (!d.ok) throw new Error(d.error || "Check failed");
-      const plan = PAY.NAMES[d.scope] || "Pro";
-      if (d.status === "None") say("No payment request found for this email.", "");
-      else if (d.status === "Approved") say(plan + " is active until " + d.expires + ".", "success");
-      else if (d.status === "Pending") say("Your " + plan + " payment is awaiting approval.", "");
-      else if (d.status === "Expired") say("Your " + plan + " plan expired on " + d.expires + ". You can renew above.", "error");
-      else say("Your last request was " + String(d.status).toLowerCase() + ". Please contact support.", "error");
-    } catch (err) { say("Could not check your status right now. Try again later.", "error"); }
-  }
-
-  /* Let the embedded apps send people to this upgrade page (they post a message from their own site) */
-  window.addEventListener("message", e => {
-    const d = e.data;
-    if (!d || d.source !== "pro-app" || d.type !== "open-upgrade") return;
-    if (!APPS.some(a => new URL(a.url).origin === e.origin)) return;   // only our four apps
-    payMode = "suite";
-    select("upgrade");
-  });
-
   /* ---------- Start ---------- */
   const savedTheme = ls.get("pro-theme", null); if (savedTheme) root.dataset.theme = savedTheme;
   applyAccent();
   let start = location.hash.slice(1);
-  if (!isPage(start) && !S[start]) start = settings.start === "last" ? ls.get("pro-last", "home") : "home";
-  if (!isPage(start) && !S[start]) start = "home";
+  if (start !== "home" && !S[start]) start = settings.start === "last" ? ls.get("pro-last", "home") : "home";
+  if (start !== "home" && !S[start]) start = "home";
 
   const splash = $("splash");
   if (settings.skipSplash) { splash.remove(); select(start); }
