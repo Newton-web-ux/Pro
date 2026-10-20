@@ -63,6 +63,10 @@
   .search-btn:hover { background:var(--hover); color:var(--ink); }
   kbd { font:inherit; font-size:.72rem; border:1px solid var(--line); border-bottom-width:2px; border-radius:5px; padding:1px 6px; background:var(--bg); color:var(--muted); }
 
+  /* Payment badge */
+  .pay { display:inline-flex; align-items:center; flex:none; font-style:normal; font-size:.72rem; font-weight:700; letter-spacing:.02em; line-height:1; padding:5px 10px; border-radius:999px; background:var(--hover); color:var(--accent); border:1px solid var(--line); white-space:nowrap; }
+  .pay[hidden] { display:none; }
+
   main { flex:1; position:relative; min-height:0; margin:10px; border-radius:14px; overflow:hidden; background:var(--panel); box-shadow:var(--shadow); border:1px solid var(--line); display:flex; }
   .panel { position:relative; flex:1; min-width:0; display:none; background:#fff; }
   .panel.active, .panel.split { display:block; }
@@ -89,10 +93,12 @@
   .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; }
   .card { text-align:left; border:1px solid var(--line); background:var(--bg); border-radius:14px; padding:18px; display:flex; flex-direction:column; gap:10px; transition:transform .15s,border-color .15s; }
   .card:hover { transform:translateY(-2px); border-color:var(--accent); }
+  .card .top { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
   .card .ic { width:44px; height:44px; border-radius:12px; display:grid; place-items:center; color:#fff; background:linear-gradient(135deg,var(--accent),var(--accent2)); }
   .card .ic svg.i { width:22px; height:22px; }
   .card b { font-size:1.02rem; }
   .card span { color:var(--muted); font-size:.88rem; }
+  .card span.pnote { color:var(--ink); font-size:.8rem; font-weight:600; padding-top:8px; border-top:1px dashed var(--line); }
   .card small { color:var(--muted); font-size:.76rem; margin-top:auto; }
   .tips { margin-top:26px; color:var(--muted); font-size:.88rem; line-height:1.7; }
 
@@ -111,7 +117,10 @@
   .modal-bg.open { display:flex; }
   .modal { width:min(560px,100%); max-height:76vh; overflow:auto; background:var(--panel); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow); }
   .modal h3 { margin:0; padding:16px 18px 8px; }
+  .modal h4 { margin:18px 0 2px; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
   .modal .body { padding:6px 18px 18px; }
+  .modal .plan-name { display:block; font-weight:700; }
+  .modal .plan-note { display:block; color:var(--muted); font-size:.82rem; margin-top:2px; }
   #pal-input { width:100%; border:0; border-bottom:1px solid var(--line); padding:16px 18px; background:transparent; color:var(--ink); font:inherit; font-size:1.05rem; }
   #pal-list { list-style:none; margin:0; padding:6px; max-height:50vh; overflow:auto; }
   #pal-list li { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:10px; cursor:pointer; }
@@ -196,6 +205,7 @@
   <div class="topbar">
     <span class="title" id="cur-title"></span>
     <span class="sub" id="cur-sub"></span>
+    <em class="pay" id="cur-pay" hidden></em>
     <div class="status"><i class="dot" id="dot"></i><span id="status-text">Ready</span></div>
     <button class="search-btn" id="open-pal" type="button" aria-label="Search and commands"><span id="search-ic"></span><span>Search</span><kbd>Ctrl K</kbd></button>
   </div>
@@ -216,6 +226,11 @@
     <div class="row"><span>Accent color</span><div class="swatches" id="swatches"></div></div>
     <div class="row"><span>When Pro Suite opens</span><select id="set-start"><option value="home">Show Home</option><option value="last">Reopen last app</option></select></div>
     <div class="row"><span>Skip the splash screen</span><input type="checkbox" id="set-splash"></div>
+
+    <h4 id="plans-h">Plans and pricing</h4>
+    <div id="plans"></div>
+
+    <h4>Shortcuts</h4>
     <div class="keys">
       <kbd>Ctrl/Cmd K</kbd><span>Search apps and commands</span>
       <kbd>Alt 0</kbd><span>Home</span>
@@ -248,10 +263,12 @@
     reload:'<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>',
     full:'<path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/>',
     theme:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
-    settings:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'
+    settings:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+    pricing:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>'
   };
   const icon = n => '<svg class="i" viewBox="0 0 24 24">' + P[n] + '</svg>';
   const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
   const ls = {
     get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
@@ -261,12 +278,19 @@
     $("toasts").appendChild(el); setTimeout(() => el.remove(), 2600);
   }
 
-  /* ---------- Apps ---------- */
+  /* ---------- Apps ----------
+     Payment details live in one place: edit each app's `pay` entry.
+       tag  = short badge text (for example "Free" or "₹199/mo")
+       note = one-line description shown on the card, in Settings and in tooltips */
   const APPS = [
-    { id:"whiteboard", name:"Whiteboard", title:"Pro Whiteboard", desc:"Sketch, teach and brainstorm on a shared canvas", url:"https://prowhiteboard.in" },
-    { id:"document",   name:"Document",   title:"Pro Document",   desc:"Write and edit documents",                    url:"https://prodocument.in" },
-    { id:"slides",     name:"Slides",     title:"Pro Slides",     desc:"Create and present slide decks",              url:"https://newton-web-ux.github.io/Pro-MEET/" },
-    { id:"classroom",  name:"Classroom",  title:"Pro Classroom",  desc:"Classes, assignments and learning",           url:"https://newton-web-ux.github.io/Proclassroom-/" }
+    { id:"whiteboard", name:"Whiteboard", title:"Pro Whiteboard", desc:"Sketch, teach and brainstorm on a shared canvas", url:"https://prowhiteboard.in",
+      pay:{ tag:"Free", note:"Free to use. No payment required." } },
+    { id:"document",   name:"Document",   title:"Pro Document",   desc:"Write and edit documents",                    url:"https://prodocument.in",
+      pay:{ tag:"Free", note:"Free to use. No payment required." } },
+    { id:"slides",     name:"Slides",     title:"Pro Slides",     desc:"Create and present slide decks",              url:"https://newton-web-ux.github.io/Pro-MEET/",
+      pay:{ tag:"Free", note:"Free to use. No payment required." } },
+    { id:"classroom",  name:"Classroom",  title:"Pro Classroom",  desc:"Classes, assignments and learning",           url:"https://newton-web-ux.github.io/Proclassroom-/",
+      pay:{ tag:"Free", note:"Free to use. No payment required." } }
   ];
   const stage = $("stage"), nav = $("nav"), dot = $("dot"), statusText = $("status-text");
   const S = {};
@@ -291,7 +315,7 @@
   function build(app, i) {
     const b = document.createElement("button");
     b.type = "button"; b.id = "tab-" + app.id; b.setAttribute("role", "tab");
-    b.title = app.title + " (Alt+" + (i + 1) + ", Shift+click to split)";
+    b.title = app.title + " (" + app.pay.tag + ", Alt+" + (i + 1) + ", Shift+click to split)";
     b.innerHTML = icon(app.id) + "<span>" + app.name + "</span>";
     b.addEventListener("click", e => e.shiftKey ? openSplit(app.id) : select(app.id));
     nav.appendChild(b);
@@ -354,7 +378,7 @@
     const g = h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
     const rec = ls.get("pro-recent", {});
     home.innerHTML = '<h1>' + g + '</h1><div class="clock" id="clock"></div><div class="cards">' +
-      APPS.map(a => '<button class="card" type="button" data-id="' + a.id + '"><div class="ic">' + icon(a.id) + '</div><b>' + a.title + '</b><span>' + a.desc + '</span><small>' + ago(rec[a.id]) + '</small></button>').join("") +
+      APPS.map(a => '<button class="card" type="button" data-id="' + a.id + '"><div class="top"><div class="ic">' + icon(a.id) + '</div><em class="pay">' + esc(a.pay.tag) + '</em></div><b>' + a.title + '</b><span>' + a.desc + '</span><span class="pnote">' + esc(a.pay.note) + '</span><small>' + ago(rec[a.id]) + '</small></button>').join("") +
       '</div><div class="tips">Press <kbd>Ctrl K</kbd> to search, hold Shift while clicking an app to open it side by side, or open Quick notes from the sidebar.</div>';
     home.querySelectorAll(".card").forEach(c => c.addEventListener("click", e => e.shiftKey ? openSplit(c.dataset.id) : select(c.dataset.id)));
     tickClock();
@@ -364,6 +388,17 @@
     c.textContent = new Date().toLocaleString([], { weekday:"long", day:"numeric", month:"long", hour:"numeric", minute:"2-digit" });
   }
   setInterval(tickClock, 30000);
+
+  /* ---------- Plans and pricing (Settings) ---------- */
+  function renderPlans() {
+    $("plans").innerHTML = APPS.map(a =>
+      '<div class="row"><span><span class="plan-name">' + a.title + '</span><span class="plan-note">' + esc(a.pay.note) + '</span></span><em class="pay">' + esc(a.pay.tag) + '</em></div>'
+    ).join("");
+  }
+  function showPlans() {
+    openModal("set-bg");
+    $("plans-h").scrollIntoView({ block:"start" });
+  }
 
   /* ---------- Navigation ---------- */
   function mark(id) { const r = ls.get("pro-recent", {}); r[id] = Date.now(); ls.set("pro-recent", r); }
@@ -384,6 +419,17 @@
     if (current === "home") { title = "Home"; sub = "Pick an app to get started"; }
     else { title = S[current].app.title + (splitOn ? " + " + S[split].app.name : ""); sub = splitOn ? "Split view" : S[current].app.desc; }
     $("cur-title").textContent = title; $("cur-sub").textContent = sub;
+
+    /* Payment pill in the top bar */
+    const pay = $("cur-pay");
+    if (current === "home") { pay.hidden = true; pay.removeAttribute("title"); }
+    else {
+      const apps = splitOn ? [S[current].app, S[split].app] : [S[current].app];
+      pay.textContent = Array.from(new Set(apps.map(a => a.pay.tag))).join(" / ");
+      pay.title = apps.map(a => a.title + ": " + a.pay.note).join("\n");
+      pay.hidden = false;
+    }
+
     document.title = (current === "home" ? "Home" : title) + " | Pro Suite";
     if (current === "home") setStatus("ok", "Ready");
     else setStatus(S[current].loaded ? "ok" : "", S[current].loaded ? "Connected" : "Connecting");
@@ -424,6 +470,7 @@
     ["reload-btn","reload","Reload app", () => { if (current === "home") return; load(current); if (split) load(split); }],
     ["full-btn","full","Full screen (Alt+F)", toggleFull],
     ["theme-btn","theme","Light or dark", () => { const n = isDark() ? "light" : "dark"; applyTheme(n); ls.set("pro-theme", n); }],
+    ["plans-btn","pricing","Plans and pricing", showPlans],
     ["set-btn","settings","Settings and shortcuts", () => openModal("set-bg")]
   ];
   TOOLS.forEach(([id, ic, label, fn]) => {
@@ -476,14 +523,16 @@
       { l:"Reload current app", k:"", f:() => $("reload-btn").click(), ic:"reload" },
       { l:"Toggle full screen", k:"Alt F", f:toggleFull, ic:"full" },
       { l:"Switch light or dark theme", k:"", f:() => $("theme-btn").click(), ic:"theme" },
-      { l:"Settings and shortcuts", k:"", f:() => openModal("set-bg"), ic:"settings" });
+      { l:"Plans and pricing", k:"", f:showPlans, ic:"pricing" });
+    APPS.forEach(a => c.push({ l:"Payment: " + a.title, k:a.pay.tag, f:showPlans, ic:"pricing" }));
+    c.push({ l:"Settings and shortcuts", k:"", f:() => openModal("set-bg"), ic:"settings" });
     return c;
   }
   function renderPal() {
     const q = $("pal-input").value.trim().toLowerCase();
-    items = commands().filter(c => c.l.toLowerCase().includes(q));
+    items = commands().filter(c => (c.l + " " + c.k).toLowerCase().includes(q));
     sel = Math.min(sel, Math.max(items.length - 1, 0));
-    $("pal-list").innerHTML = items.length ? items.map((c, i) => '<li data-i="' + i + '" class="' + (i === sel ? "sel" : "") + '">' + icon(c.ic) + '<span>' + c.l + '</span><small>' + c.k + '</small></li>').join("") : '<li>No matches</li>';
+    $("pal-list").innerHTML = items.length ? items.map((c, i) => '<li data-i="' + i + '" class="' + (i === sel ? "sel" : "") + '">' + icon(c.ic) + '<span>' + esc(c.l) + '</span><small>' + esc(c.k) + '</small></li>').join("") : '<li>No matches</li>';
     $("pal-list").querySelectorAll("li[data-i]").forEach(li => li.addEventListener("click", () => runPal(+li.dataset.i)));
   }
   function runPal(i) { const c = items[i]; if (!c) return; closeModals(); c.f(); }
@@ -503,6 +552,7 @@
   $("set-start").value = settings.start; $("set-splash").checked = settings.skipSplash;
   $("set-start").addEventListener("change", e => { settings.start = e.target.value; ls.set("pro-settings", settings); });
   $("set-splash").addEventListener("change", e => { settings.skipSplash = e.target.checked; ls.set("pro-settings", settings); });
+  renderPlans();
 
   /* ---------- Keyboard ---------- */
   document.addEventListener("keydown", e => {
